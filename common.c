@@ -2,16 +2,16 @@
 
 void OnKeyPress(GtkWidget *widget, GdkEventKey *event, gpointer user_data){
     switch(event->keyval){
-    case 119:
+    case 'w':
         UpdateScreen(UP);
         break;
-    case 97:
+    case 'a':
         UpdateScreen(LEFT);
         break;
-    case 115:
+    case 's':
         UpdateScreen(DOWN);
         break;
-    case 100:
+    case 'd':
         UpdateScreen(RIGHT);
         break;
     }

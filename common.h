@@ -7,6 +7,7 @@
 #define ROWS 16
 #define COLS 32
 #define PNG_SIZE 32
+#define INVENTORY_PNG_SIZE 64
 #define WINDOW_HEIGHT ROWS*PNG_SIZE
 #define WINDOW_WIDTH  COLS*PNG_SIZE
 #define MAP_SIZE_X 512
@@ -14,6 +15,7 @@
 #define GAME_OBJECTS 4
 #define PLAYER_X_RELATIVE COLS/2-1
 #define PLAYER_Y_RELATIVE ROWS/2-1
+#define INVENTORY_SIZE 10
 
 int topleft_x_absolute;
 int topleft_y_absolute;
@@ -24,6 +26,8 @@ typedef struct GameObject{
     bool canPlayerEnter;
     bool isInteractive;
     bool isPlayer;
+    int canDamage;
+    int healthPoints;
 }GameObject;
 
 typedef struct MapSquare{
@@ -46,9 +50,18 @@ typedef struct Square{
     gint height; 
 }Square;
 
+typedef struct Item{
+    Square *position;
+    char *name;
+    int id;
+    int quantity;
+    bool wearable;
+}Item;
+
 MapSquare Map[MAP_SIZE_X][MAP_SIZE_Y];
 GameObject Objects[GAME_OBJECTS];
 Square ***Board;
+Item Inventory[10];
 
 void OnKeyPress(GtkWidget *widget, GdkEventKey *event, gpointer user_data);
 void UpdateScreen(Direction dir);

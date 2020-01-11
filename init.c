@@ -16,6 +16,11 @@ void InitScreen(GtkWidget* grid){
             gtk_widget_show(Board[i][j]->image);
         }
     }
+    for(int i=0;i<INVENTORY_SIZE;i++){
+        gtk_grid_attach(GTK_GRID(grid),  GTK_WIDGET(Inventory[i].position->image), Inventory[i].position->left,
+        Inventory[i].position->top, Inventory[i].position->width, Inventory[i].position->height);
+        gtk_widget_show(Inventory[i].position->image);
+    }
 }
 
 GameObject RandomObject(){
@@ -65,6 +70,24 @@ void InitGameObjects(){
     Objects[3].isPlayer = false;
 }
 
+void InitInventory(){
+    for(int i=0;i<INVENTORY_SIZE;i++){
+        Inventory[i].position = malloc(sizeof(Square));
+        Inventory[i].position->image = gtk_image_new();
+        if(i)
+            gtk_image_set_from_file(GTK_IMAGE(Inventory[i].position->image),"Images/noitem.png");
+        else
+            gtk_image_set_from_file(GTK_IMAGE(Inventory[i].position->image),"Images/fist.png");
+        Inventory[i].position->top = WINDOW_HEIGHT;
+        Inventory[i].position->left = i*64;
+        Inventory[i].position->width = INVENTORY_PNG_SIZE;
+        Inventory[i].position->height  = INVENTORY_PNG_SIZE;
+        Inventory[i].name = "";
+        Inventory[i].quantity = 0;
+        Inventory[i].wearable = false; 
+    }
+}
+
 void Init(){
     topleft_x_absolute = MAP_SIZE_X/2 - COLS/2;
     topleft_y_absolute = MAP_SIZE_Y/2 - ROWS/2;
@@ -73,12 +96,13 @@ void Init(){
     gtk_window_set_title(GTK_WINDOW(window),"Game");
     GtkWidget *grid = gtk_grid_new();
     Board = (Square***) malloc(COLS*sizeof(Square**));
+    InitInventory();
     InitGameObjects();
     InitMap();
     InitScreen(grid);
     gtk_container_add(GTK_CONTAINER(window),GTK_WIDGET(grid));
-    g_signal_connect (G_OBJECT (window), "destroy",G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect (G_OBJECT (window), "key_press_event", G_CALLBACK (OnKeyPress), NULL);
+        g_signal_connect (G_OBJECT (window), "destroy",G_CALLBACK(gtk_main_quit), NULL);
     gtk_widget_show(window);
     gtk_widget_show(grid);
     gtk_main();
