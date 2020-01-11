@@ -1,6 +1,6 @@
 #include "init.h"
 
-void InitScreen(GtkWidget* grid){
+void InitScreen(GtkWidget* grid,GtkCssProvider *cssProvider){
     for(int i=0;i<COLS;i++){
         Board[i] = (Square**)malloc(ROWS*sizeof(Square*));
         for(int j=0;j<ROWS;j++){
@@ -21,10 +21,17 @@ void InitScreen(GtkWidget* grid){
         Inventory[i].position->top, Inventory[i].position->width, Inventory[i].position->height);
         gtk_widget_show(Inventory[i].position->image);
     }
+    GtkWidget *power = gtk_progress_bar_new();
+    gtk_widget_set_name(GTK_WIDGET(power),"progress-bar");
+    gtk_style_context_add_provider(gtk_widget_get_style_context(power),GTK_STYLE_PROVIDER(cssProvider),GTK_STYLE_PROVIDER_PRIORITY_USER);
+    gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(power),INVENTORY_SIZE*INVENTORY_PNG_SIZE,
+    WINDOW_HEIGHT,WINDOW_WIDTH-INVENTORY_SIZE*INVENTORY_PNG_SIZE,20);
+    gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(power),0.5);
+    gtk_widget_show(power);
 }
 
 GameObject RandomObject(){
-    int x = rand()%30;
+    int x = rand()%100;
     if(x<3) return Objects[2];
     if(x<8) return Objects[3];
     return Objects[1];
@@ -70,14 +77,16 @@ void InitGameObjects(){
     Objects[3].isPlayer = false;
 }
 
-void InitInventory(){
+void InitInventory(GtkCssProvider *cssProvider){
     for(int i=0;i<INVENTORY_SIZE;i++){
         Inventory[i].position = malloc(sizeof(Square));
         Inventory[i].position->image = gtk_image_new();
         if(i)
             gtk_image_set_from_file(GTK_IMAGE(Inventory[i].position->image),"Images/noitem.png");
         else
-            gtk_image_set_from_file(GTK_IMAGE(Inventory[i].position->image),"Images/fist.png");
+            gtk_image_set_from_file(GTK_IMAGE(Inventory[i].position->image),"Images/fistt.png");
+        gtk_widget_set_name(GTK_WIDGET(Inventory[i].position->image),"inventory");
+        gtk_style_context_add_provider(gtk_widget_get_style_context(Inventory[i].position->image),GTK_STYLE_PROVIDER(cssProvider),GTK_STYLE_PROVIDER_PRIORITY_USER);
         Inventory[i].position->top = WINDOW_HEIGHT;
         Inventory[i].position->left = i*64;
         Inventory[i].position->width = INVENTORY_PNG_SIZE;
@@ -92,17 +101,22 @@ void Init(){
     topleft_x_absolute = MAP_SIZE_X/2 - COLS/2;
     topleft_y_absolute = MAP_SIZE_Y/2 - ROWS/2;
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_widget_set_name(GTK_WIDGET(window),"window");
+    GtkCssProvider *cssProvider =  gtk_css_provider_new();
+    gtk_css_provider_load_from_path(cssProvider,"Style/gtk.css",NULL);
+    gtk_style_context_add_provider(gtk_widget_get_style_context(window),GTK_STYLE_PROVIDER(cssProvider),GTK_STYLE_PROVIDER_PRIORITY_USER);
     gtk_window_set_default_size(GTK_WINDOW(window),WINDOW_WIDTH,WINDOW_HEIGHT);
+    gtk_window_set_resizable(GTK_WINDOW(window),FALSE);
     gtk_window_set_title(GTK_WINDOW(window),"Game");
     GtkWidget *grid = gtk_grid_new();
     Board = (Square***) malloc(COLS*sizeof(Square**));
-    InitInventory();
+    InitInventory(cssProvider);
     InitGameObjects();
     InitMap();
-    InitScreen(grid);
+    InitScreen(grid,cssProvider);
     gtk_container_add(GTK_CONTAINER(window),GTK_WIDGET(grid));
     g_signal_connect (G_OBJECT (window), "key_press_event", G_CALLBACK (OnKeyPress), NULL);
-        g_signal_connect (G_OBJECT (window), "destroy",G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect (G_OBJECT (window), "destroy",G_CALLBACK(gtk_main_quit), NULL);
     gtk_widget_show(window);
     gtk_widget_show(grid);
     gtk_main();
