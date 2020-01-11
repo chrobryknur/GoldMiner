@@ -77,10 +77,16 @@ void InitMap(){
 void InitItems(){
     AllItems = malloc(ALL_ITEMS_NUM*sizeof(Item));
     AllItems[0].id = 0;
-    AllItems[0].name = "Fists";
-    AllItems[0].quantity = 1;
-    AllItems[0].path = "Images/fistt.png";
-    AllItems[0].wearable = true;
+    AllItems[0].name = "Empty";
+    AllItems[0].quantity = 0;
+    AllItems[0].path = "Images/noitem.png";
+    AllItems[0].wearable = false;
+
+    AllItems[1].id =  1;
+    AllItems[1].name = "Fists";
+    AllItems[1].quantity = 1;
+    AllItems[1].path = "Images/fistt.png";
+    AllItems[1].wearable = true;
 }
 
 void InitGameObjects(){
@@ -113,30 +119,29 @@ void InitGameObjects(){
     Objects[4].canPlayerEnter = false;
     Objects[4].isInteractive = true;
     Objects[4].isPlayer = false;
+    Objects[4].vulnerableToID = 0;
+    Objects[4].healthPoints = 3;
 }
 
 void InitInventory(GtkCssProvider *cssProvider){
+    EquippedItem = &AllItems[0];
     Inventory = malloc(INVENTORY_SIZE*sizeof(Item));
     for(int i=0;i<INVENTORY_SIZE;i++){
+        if(i) Inventory[i] = AllItems[0];
+        else Inventory[i] = AllItems[1];
         Inventory[i].position = malloc(sizeof(Square));
         Inventory[i].position->image = gtk_image_new();
-        if(i)
-            gtk_image_set_from_file(GTK_IMAGE(Inventory[i].position->image),"Images/noitem.png");
-        else
-            gtk_image_set_from_file(GTK_IMAGE(Inventory[i].position->image),"Images/fistt.png");
-        gtk_widget_set_name(GTK_WIDGET(Inventory[i].position->image),"inventory");
+        gtk_image_set_from_file(GTK_IMAGE(Inventory[i].position->image),Inventory[i].path);
         gtk_style_context_add_provider(gtk_widget_get_style_context(Inventory[i].position->image),GTK_STYLE_PROVIDER(cssProvider),GTK_STYLE_PROVIDER_PRIORITY_USER);
         Inventory[i].position->top = 0;
         Inventory[i].position->left = i*INVENTORY_PNG_SIZE;
         Inventory[i].position->width = INVENTORY_PNG_SIZE;
         Inventory[i].position->height  = INVENTORY_PNG_SIZE;
-        Inventory[i].name = "";
-        Inventory[i].quantity = 0;
-        Inventory[i].wearable = false; 
     }
 }
 
 void Init(){
+    Power = 100.0;
     topleft_x_absolute = MAP_SIZE_X/2 - COLS/2;
     topleft_y_absolute = MAP_SIZE_Y/2 - ROWS/2;
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -147,10 +152,12 @@ void Init(){
     gtk_window_set_title(GTK_WINDOW(window),"Game");
     GtkWidget *grid = gtk_grid_new();
     Board = (Square***) malloc(COLS*sizeof(Square**));
+    InitItems();
     InitInventory(cssProvider);
     InitGameObjects();
     InitMap();
     InitScreen(grid,cssProvider);
+    g_timeout_add(100,UpdatePower,NULL);
     gtk_container_add(GTK_CONTAINER(window),GTK_WIDGET(grid));
     g_signal_connect (G_OBJECT (window), "key_press_event", G_CALLBACK (OnKeyPress), NULL);
     g_signal_connect (G_OBJECT (window), "destroy",G_CALLBACK(CleanUp), NULL);

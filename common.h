@@ -16,8 +16,10 @@
 #define GAME_OBJECTS 5
 #define PLAYER_X_RELATIVE COLS/2-1
 #define PLAYER_Y_RELATIVE ROWS/2-1
+#define PLAYER_X_ABSOLUTE PLAYER_X_RELATIVE + topleft_x_absolute
+#define PLAYER_Y_ABSOLUTE PLAYER_Y_RELATIVE + topleft_y_absolute
 #define INVENTORY_SIZE 10
-#define ALL_ITEMS_NUM 1
+#define ALL_ITEMS_NUM 2
 
 int topleft_x_absolute;
 int topleft_y_absolute;
@@ -28,8 +30,8 @@ typedef struct GameObject{
     bool canPlayerEnter;
     bool isInteractive;
     bool isPlayer;
-    int canDamage;
     int healthPoints;
+    int vulnerableToID;
 }GameObject;
 
 typedef struct MapSquare{
@@ -67,10 +69,13 @@ Square ***Board;
 Item *Inventory;
 Item *EquippedItem;
 Item *AllItems;
+float Power;
 GtkWidget *powerLeft;
 GtkWidget *hourLabel;
 
-void OnKeyPress(GtkWidget *widget, GdkEventKey *event, gpointer user_data);
+void OnKeyPress(GtkWidget *widget, GdkEventKey *event);
+void Attack(Direction dir);
 void UpdateScreen(Direction dir);
+int UpdatePower();
 void CleanUp();
 void Help();

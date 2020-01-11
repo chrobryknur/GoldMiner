@@ -1,6 +1,6 @@
 #include "common.h"
 
-void OnKeyPress(GtkWidget *widget, GdkEventKey *event, gpointer user_data){
+void OnKeyPress(GtkWidget *widget, GdkEventKey *event){
     switch(event->keyval){
     case 'w':
         UpdateScreen(UP);
@@ -14,14 +14,26 @@ void OnKeyPress(GtkWidget *widget, GdkEventKey *event, gpointer user_data){
     case 'd':
         UpdateScreen(RIGHT);
         break;
+    case 'h': //LeftArrow
+        Attack(LEFT);
+        break;
+    case 'l': //RightArrow
+        Attack(RIGHT);
+        break;
+    case 'j': //UpArrow
+        Attack(UP);
+        break;
+    case 'k': //DownArrow
+        Attack(DOWN);
+        break;
     }
 }
-
 void CleanUp(){
     free(AllItems);
     free(Inventory);
     free(Board);
     gtk_main_quit();
+    exit(1);
 }
 
 void Help(){
@@ -29,5 +41,4 @@ void Help(){
     gtk_window_set_title(GTK_WINDOW(helpWindow),"Help");
     //gtk_window_set_resizable(GTK_WINDOW(helpWindow),FALSE);
     gtk_widget_show(helpWindow);
-    
 }

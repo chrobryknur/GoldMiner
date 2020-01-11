@@ -12,37 +12,77 @@ void UpdateBoard(){
 void UpdateScreen(enum Direction dir){
     switch(dir){
         case LEFT:
-            if(topleft_y_absolute-1>0 && Map[topleft_x_absolute+PLAYER_X_RELATIVE-1][topleft_y_absolute+PLAYER_Y_RELATIVE].object.canPlayerEnter){
-                Map[topleft_x_absolute+PLAYER_X_RELATIVE][topleft_y_absolute+PLAYER_Y_RELATIVE].current = 
-                Map[topleft_x_absolute+PLAYER_X_RELATIVE][topleft_y_absolute+PLAYER_Y_RELATIVE].object;
+            if(topleft_y_absolute-1>0 && Map[PLAYER_X_ABSOLUTE-1][PLAYER_Y_ABSOLUTE].object.canPlayerEnter){
+                Map[PLAYER_X_ABSOLUTE][PLAYER_Y_ABSOLUTE].current = 
+                Map[PLAYER_X_ABSOLUTE][PLAYER_Y_ABSOLUTE].object;
                 topleft_x_absolute--;
-                Map[topleft_x_absolute+PLAYER_X_RELATIVE][topleft_y_absolute+PLAYER_Y_RELATIVE].current = Objects[0];
+                Map[PLAYER_X_ABSOLUTE][PLAYER_Y_ABSOLUTE].current = Objects[0];
             }
             //dopisac else
             break;
         case UP:
-            if(topleft_y_absolute-1>0 && Map[topleft_x_absolute+PLAYER_X_RELATIVE][topleft_y_absolute+PLAYER_Y_RELATIVE-1].object.canPlayerEnter){
-                Map[topleft_x_absolute+PLAYER_X_RELATIVE][topleft_y_absolute+PLAYER_Y_RELATIVE].current = 
-                Map[topleft_x_absolute+PLAYER_X_RELATIVE][topleft_y_absolute+PLAYER_Y_RELATIVE].object;
+            if(topleft_y_absolute-1>0 && Map[PLAYER_X_ABSOLUTE][PLAYER_Y_ABSOLUTE-1].object.canPlayerEnter){
+                Map[PLAYER_X_ABSOLUTE][PLAYER_Y_ABSOLUTE].current = 
+                Map[PLAYER_X_ABSOLUTE][PLAYER_Y_ABSOLUTE].object;
                 topleft_y_absolute--;
-                Map[topleft_x_absolute+PLAYER_X_RELATIVE][topleft_y_absolute+PLAYER_Y_RELATIVE].current = Objects[0];
+                Map[PLAYER_X_ABSOLUTE][PLAYER_Y_ABSOLUTE].current = Objects[0];
             }
             break;
         case RIGHT:
-            if(topleft_x_absolute+COLS<MAP_SIZE_X && Map[topleft_x_absolute+PLAYER_X_RELATIVE+1][topleft_y_absolute+PLAYER_Y_RELATIVE].object.canPlayerEnter) {
-                Map[topleft_x_absolute+PLAYER_X_RELATIVE][topleft_y_absolute+PLAYER_Y_RELATIVE].current = 
-                Map[topleft_x_absolute+PLAYER_X_RELATIVE][topleft_y_absolute+PLAYER_Y_RELATIVE].object;
+            if(topleft_x_absolute+COLS<MAP_SIZE_X && Map[PLAYER_X_ABSOLUTE+1][PLAYER_Y_ABSOLUTE].object.canPlayerEnter) {
+                Map[PLAYER_X_ABSOLUTE][PLAYER_Y_ABSOLUTE].current = 
+                Map[PLAYER_X_ABSOLUTE][PLAYER_Y_ABSOLUTE].object;
                 topleft_x_absolute++;
-                Map[topleft_x_absolute+PLAYER_X_RELATIVE][topleft_y_absolute+PLAYER_Y_RELATIVE].current = Objects[0];
+                Map[PLAYER_X_ABSOLUTE][PLAYER_Y_ABSOLUTE].current = Objects[0];
             }
             break;
         case DOWN:
-            if(topleft_y_absolute+ROWS<MAP_SIZE_Y && Map[topleft_x_absolute+PLAYER_X_RELATIVE][topleft_y_absolute+PLAYER_Y_RELATIVE+1].object.canPlayerEnter){
-                Map[topleft_x_absolute+PLAYER_X_RELATIVE][topleft_y_absolute+PLAYER_Y_RELATIVE].current = 
-                Map[topleft_x_absolute+PLAYER_X_RELATIVE][topleft_y_absolute+PLAYER_Y_RELATIVE].object;
+            if(topleft_y_absolute+ROWS<MAP_SIZE_Y && Map[PLAYER_X_ABSOLUTE][PLAYER_Y_ABSOLUTE+1].object.canPlayerEnter){
+                Map[PLAYER_X_ABSOLUTE][PLAYER_Y_ABSOLUTE].current = 
+                Map[PLAYER_X_ABSOLUTE][PLAYER_Y_ABSOLUTE].object;
                 topleft_y_absolute++;
-                Map[topleft_x_absolute+PLAYER_X_RELATIVE][topleft_y_absolute+PLAYER_Y_RELATIVE].current = Objects[0];
+                Map[PLAYER_X_ABSOLUTE][PLAYER_Y_ABSOLUTE].current = Objects[0];
             }
+            break;
+    }
+    UpdateBoard();
+}
+
+
+int UpdatePower(){
+    if(Power>0){
+        gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(powerLeft),Power/100);
+        Power -=0.5;
+        return 1;
+    }
+    else CleanUp();
+    return 0;
+}
+
+void Attack(Direction dir){
+    switch(dir){
+        case LEFT:
+            //printf("SIEMA");
+            break;
+            /*if(Map[PLAYER_X_ABSOLUTE-1][PLAYER_Y_ABSOLUTE].object.isInteractive){
+                if(Map[PLAYER_X_ABSOLUTE-1][PLAYER_Y_ABSOLUTE].object.vulnerableToID == EquippedItem->id){
+                    Map[PLAYER_X_ABSOLUTE-1][PLAYER_Y_ABSOLUTE].object.healthPoints--;
+                    if(!Map[PLAYER_X_ABSOLUTE-1][PLAYER_Y_ABSOLUTE].object.healthPoints){
+                        Map[PLAYER_X_ABSOLUTE-1][PLAYER_Y_ABSOLUTE].object = Objects[0];
+                        Map[PLAYER_X_ABSOLUTE-1][PLAYER_Y_ABSOLUTE].current = Objects[0];
+                    }
+                }
+            }
+            break;*/
+        case RIGHT:
+
+            break;
+        case UP:
+
+            break;
+
+        case DOWN:
+
             break;
     }
     UpdateBoard();
