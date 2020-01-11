@@ -2,10 +2,15 @@ window{
     background-color: rgb(0, 68, 9);
 }
 
-inventory{
+image{
     background-color: rgb(116, 116, 116);
 }
 
-power-bar{
-    min-height: 32px;
+progressbar progress {
+    min-height: 12px;
+    background-color: rgba(83, 165, 198, 255);
+}
+
+label{
+    font-size:16px;
 }

@@ -7,7 +7,7 @@
 #define ROWS 16
 #define COLS 32
 #define PNG_SIZE 32
-#define INVENTORY_PNG_SIZE 64
+#define INVENTORY_PNG_SIZE 48
 #define WINDOW_HEIGHT ROWS*PNG_SIZE
 #define WINDOW_WIDTH  COLS*PNG_SIZE
 #define MAP_SIZE_X 512
@@ -62,6 +62,7 @@ MapSquare Map[MAP_SIZE_X][MAP_SIZE_Y];
 GameObject Objects[GAME_OBJECTS];
 Square ***Board;
 Item Inventory[10];
+Item* EquippedItem;
 
 void OnKeyPress(GtkWidget *widget, GdkEventKey *event, gpointer user_data);
 void UpdateScreen(Direction dir);

@@ -13,27 +13,28 @@ void InitScreen(GtkWidget* grid,GtkCssProvider *cssProvider){
             Board[i][j]->width = WINDOW_WIDTH/COLS;
             gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(Board[i][j]->image),Board[i][j]->left,
             Board[i][j]->top,Board[i][j]->width,Board[i][j]->height);
-            gtk_widget_show(Board[i][j]->image);
         }
     }
     for(int i=0;i<INVENTORY_SIZE;i++){
         gtk_grid_attach(GTK_GRID(grid),  GTK_WIDGET(Inventory[i].position->image), Inventory[i].position->left,
         Inventory[i].position->top, Inventory[i].position->width, Inventory[i].position->height);
-        gtk_widget_show(Inventory[i].position->image);
     }
     GtkWidget *power = gtk_progress_bar_new();
-    gtk_widget_set_name(GTK_WIDGET(power),"progress-bar");
     gtk_style_context_add_provider(gtk_widget_get_style_context(power),GTK_STYLE_PROVIDER(cssProvider),GTK_STYLE_PROVIDER_PRIORITY_USER);
-    gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(power),INVENTORY_SIZE*INVENTORY_PNG_SIZE,
-    WINDOW_HEIGHT,WINDOW_WIDTH-INVENTORY_SIZE*INVENTORY_PNG_SIZE,20);
+    gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(power),1,
+    WINDOW_HEIGHT+10,PROGRESSBAR_WIDTH-30,16);
     gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(power),0.5);
-    gtk_widget_show(power);
+
+    GtkWidget* label = gtk_label_new("HOUR");
+    gtk_style_context_add_provider(gtk_widget_get_style_context(label),GTK_STYLE_PROVIDER(cssProvider),GTK_STYLE_PROVIDER_PRIORITY_USER);
+    //gtk_label_set_text(GTK_LABEL(label),"Hour");
+    gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(label),1,WINDOW_HEIGHT+32,30,12);
 }
 
 GameObject RandomObject(){
     int x = rand()%100;
-    if(x<3) return Objects[2];
-    if(x<8) return Objects[3];
+    if(x<3) return Objects[3];
+    if(x<10) return Objects[2];
     return Objects[1];
 }
 
@@ -88,7 +89,7 @@ void InitInventory(GtkCssProvider *cssProvider){
         gtk_widget_set_name(GTK_WIDGET(Inventory[i].position->image),"inventory");
         gtk_style_context_add_provider(gtk_widget_get_style_context(Inventory[i].position->image),GTK_STYLE_PROVIDER(cssProvider),GTK_STYLE_PROVIDER_PRIORITY_USER);
         Inventory[i].position->top = WINDOW_HEIGHT;
-        Inventory[i].position->left = i*64;
+        Inventory[i].position->left = i*INVENTORY_PNG_SIZE+PROGRESSBAR_WIDTH;
         Inventory[i].position->width = INVENTORY_PNG_SIZE;
         Inventory[i].position->height  = INVENTORY_PNG_SIZE;
         Inventory[i].name = "";
@@ -101,9 +102,8 @@ void Init(){
     topleft_x_absolute = MAP_SIZE_X/2 - COLS/2;
     topleft_y_absolute = MAP_SIZE_Y/2 - ROWS/2;
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_widget_set_name(GTK_WIDGET(window),"window");
+    gtk_widget_set_name(GTK_WIDGET(window),".window");
     GtkCssProvider *cssProvider =  gtk_css_provider_new();
-    gtk_css_provider_load_from_path(cssProvider,"Style/gtk.css",NULL);
     gtk_style_context_add_provider(gtk_widget_get_style_context(window),GTK_STYLE_PROVIDER(cssProvider),GTK_STYLE_PROVIDER_PRIORITY_USER);
     gtk_window_set_default_size(GTK_WINDOW(window),WINDOW_WIDTH,WINDOW_HEIGHT);
     gtk_window_set_resizable(GTK_WINDOW(window),FALSE);
@@ -117,7 +117,7 @@ void Init(){
     gtk_container_add(GTK_CONTAINER(window),GTK_WIDGET(grid));
     g_signal_connect (G_OBJECT (window), "key_press_event", G_CALLBACK (OnKeyPress), NULL);
     g_signal_connect (G_OBJECT (window), "destroy",G_CALLBACK(gtk_main_quit), NULL);
-    gtk_widget_show(window);
-    gtk_widget_show(grid);
+    gtk_css_provider_load_from_path(cssProvider,"Style/gtk.css",NULL);
+    gtk_widget_show_all(window);
     gtk_main();
 }
