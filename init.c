@@ -22,13 +22,12 @@ void InitScreen(GtkWidget* grid,GtkCssProvider *cssProvider){
     GtkWidget *power = gtk_progress_bar_new();
     gtk_style_context_add_provider(gtk_widget_get_style_context(power),GTK_STYLE_PROVIDER(cssProvider),GTK_STYLE_PROVIDER_PRIORITY_USER);
     gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(power),1,
-    WINDOW_HEIGHT+10,PROGRESSBAR_WIDTH-30,16);
+    WINDOW_HEIGHT,PROGRESSBAR_WIDTH,12);
     gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(power),0.5);
 
     GtkWidget* label = gtk_label_new("HOUR");
     gtk_style_context_add_provider(gtk_widget_get_style_context(label),GTK_STYLE_PROVIDER(cssProvider),GTK_STYLE_PROVIDER_PRIORITY_USER);
-    //gtk_label_set_text(GTK_LABEL(label),"Hour");
-    gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(label),1,WINDOW_HEIGHT+32,30,12);
+    gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(label),PROGRESSBAR_WIDTH/2,WINDOW_HEIGHT+16,1,12);
 }
 
 GameObject RandomObject(){

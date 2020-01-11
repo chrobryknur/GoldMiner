@@ -6,11 +6,18 @@ image{
     background-color: rgb(116, 116, 116);
 }
 
+progressbar{
+    margin-top: 5px;
+    margin-left: 0px;
+}
+
 progressbar progress {
     min-height: 12px;
     background-color: rgba(83, 165, 198, 255);
 }
 
 label{
-    font-size:16px;
+    margin-top: 10px;
+    margin-left: 0px;
+    font-size:12px;
 }
