@@ -1,14 +1,14 @@
 window{
-    background-color: rgb(0, 68, 9);
+    background-color: rgb(0, 43, 6);
 }
 
 image{
+    margin-top:1px;
     background-color: rgb(116, 116, 116);
 }
 
 progressbar{
-    margin-top: 5px;
-    margin-left: 0px;
+    margin-top:12px;
 }
 
 progressbar progress {
@@ -17,7 +17,10 @@ progressbar progress {
 }
 
 label{
-    margin-top: 10px;
-    margin-left: 0px;
-    font-size:12px;
+    margin-top:12px;
+}
+
+button{
+    min-width: 96px;
+    min-height: 46px;
 }
