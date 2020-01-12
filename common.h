@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <gdk/gdkkeysyms.h>
 #include <assert.h>
+#include <math.h>
 
 #define ROWS 16
 #define COLS 32
@@ -11,9 +12,9 @@
 #define INVENTORY_PNG_SIZE 48
 #define WINDOW_HEIGHT ROWS*PNG_SIZE
 #define WINDOW_WIDTH  COLS*PNG_SIZE
-#define MAP_SIZE_X 512
-#define MAP_SIZE_Y 512
-#define GAME_OBJECTS 5
+#define MAP_SIZE_X 256
+#define MAP_SIZE_Y 256
+#define GAME_OBJECTS 7
 #define PLAYER_X_RELATIVE COLS/2-1
 #define PLAYER_Y_RELATIVE ROWS/2-1
 #define PLAYER_X_ABSOLUTE PLAYER_X_RELATIVE + topleft_x_absolute

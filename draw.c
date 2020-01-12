@@ -18,7 +18,6 @@ void UpdateScreen(enum Direction dir){
                 topleft_x_absolute--;
                 Map[PLAYER_X_ABSOLUTE][PLAYER_Y_ABSOLUTE].current = Objects[0];
             }
-            //dopisac else
             break;
         case UP:
             if(topleft_y_absolute-1>0 && Map[PLAYER_X_ABSOLUTE][PLAYER_Y_ABSOLUTE-1].object.canPlayerEnter){
@@ -55,7 +54,7 @@ int UpdatePower(){
         Power -=0.5;
         return 1;
     }
-    else CleanUp();
+    //else CleanUp();
     return 0;
 }
 

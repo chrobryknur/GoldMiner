@@ -57,7 +57,12 @@ GameObject RandomObject(){
     if(x<2) return Objects[3];
     if(x<5) return Objects[2];
     if(x<10) return Objects[4];
+    if(x<15) return Objects[5];
     return Objects[1];
+}
+
+int Pythagorem(int x, int y){
+    return sqrt((x-MAP_SIZE_X/2)*(x-MAP_SIZE_X/2) + (y-MAP_SIZE_Y/2)*(y-MAP_SIZE_Y/2));
 }
 
 void InitMap(){
@@ -66,6 +71,9 @@ void InitMap(){
             if(i == topleft_x_absolute + COLS/2 -1 && j == topleft_y_absolute+ROWS/2 -1){
                 Map[i][j].current = Objects[0];
                 Map[i][j].object = Objects[1];
+            }
+            else if(Pythagorem(i,j)>MAP_SIZE_X/2 - 30){
+                Map[i][j].current = Map[i][j].object =  Objects[6];
             }
             else{
                 Map[i][j].current = Map[i][j].object = RandomObject();
@@ -87,6 +95,13 @@ void InitItems(){
     AllItems[1].quantity = 1;
     AllItems[1].path = "Images/fistt.png";
     AllItems[1].wearable = true;
+}
+
+GameObject CreateObject(char *name, char *path, bool canPlayerEnter, bool isInteractive, bool isPlayer, int vulnerableToID,int healthPoints){
+    GameObject a;
+    a.name = name;
+    a.path = path;
+    a.canPlayerEnter = canPlayerEnter;
 }
 
 void InitGameObjects(){
@@ -121,6 +136,20 @@ void InitGameObjects(){
     Objects[4].isPlayer = false;
     Objects[4].vulnerableToID = 0;
     Objects[4].healthPoints = 3;
+
+    Objects[5].name = "ROCK";
+    Objects[5].path = "Images/rock.png";
+    Objects[5].canPlayerEnter = false;
+    Objects[5].isInteractive = true;
+    Objects[5].isPlayer = false;
+    Objects[5].healthPoints = 10;
+    Objects[5].vulnerableToID = 0;
+
+    Objects[6].name = "WAVE";
+    Objects[6].path = "Images/wave.png";
+    Objects[6].canPlayerEnter = false;
+    Objects[6].isInteractive = false;
+    Objects[6].isPlayer = false;
 }
 
 void InitInventory(GtkCssProvider *cssProvider){
