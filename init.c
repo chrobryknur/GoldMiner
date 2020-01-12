@@ -43,7 +43,7 @@ void InitScreen(GtkWidget* grid,GtkCssProvider *cssProvider){
     Buttons[0] = gtk_button_new_with_label("Help");
     Buttons[1] = gtk_button_new_with_label("Reset");
     Buttons[2] = gtk_button_new_with_label("Exit");    
-    g_signal_connect (G_OBJECT (Buttons[1]), "clicked", G_CALLBACK (Help), NULL);
+    g_signal_connect (G_OBJECT (Buttons[0]), "clicked", G_CALLBACK (Help), NULL);
     g_signal_connect (G_OBJECT (Buttons[2]), "clicked", G_CALLBACK (CleanUp), NULL);
     gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(buttonsGrid),PROGRESSBAR_WIDTH+INVENTORY_WIDTH,WINDOW_HEIGHT,WINDOW_WIDTH-PROGRESSBAR_WIDTH-INVENTORY_WIDTH,LOWER_MENU_HEIGHT);
     for(int i=0;i<3;i++){
@@ -53,11 +53,12 @@ void InitScreen(GtkWidget* grid,GtkCssProvider *cssProvider){
 }
 
 GameObject RandomObject(){
-    int x = rand()%200;
+    int x = g_random_int()%400;
     if(x<2) return Objects[3];
     if(x<5) return Objects[2];
     if(x<10) return Objects[4];
     if(x<15) return Objects[5];
+    if(x<17) return  Objects[7];
     return Objects[1];
 }
 
@@ -93,7 +94,7 @@ void InitItems(){
     AllItems[1].id =  1;
     AllItems[1].name = "Fists";
     AllItems[1].quantity = 1;
-    AllItems[1].path = "Images/fistt.png";
+    AllItems[1].path = "Images/fist.png";
     AllItems[1].wearable = true;
 }
 
@@ -106,30 +107,35 @@ GameObject CreateObject(char *name, char *path, bool canPlayerEnter, bool isInte
 
 void InitGameObjects(){
     Objects[0].name = "PLAYER";
+    Objects[0].id = 0;
     Objects[0].path = "Images/player.png";
     Objects[0].canPlayerEnter = true;
     Objects[0].isInteractive = true;
     Objects[0].isPlayer = true;
 
     Objects[1].name = "GRASS";
+    Objects[1].id = 1;
     Objects[1].path = "Images/grass.png";
     Objects[1].canPlayerEnter = true;
     Objects[1].isInteractive = true;
     Objects[1].isPlayer = false;
 
     Objects[2].name = "TREE";
+    Objects[2].id = 2;
     Objects[2].path = "Images/tree.png";
     Objects[2].canPlayerEnter = false;
     Objects[2].isInteractive = true;
     Objects[2].isPlayer = false;
 
     Objects[3].name = "LAKE";
+    Objects[3].id = 3;    
     Objects[3].path = "Images/lake.png";
     Objects[3].canPlayerEnter = false;
     Objects[3].isInteractive = false;
     Objects[3].isPlayer = false;
 
     Objects[4].name = "GRASS2";
+    Objects[4].id = 4;
     Objects[4].path = "Images/grass2.png";
     Objects[4].canPlayerEnter = false;
     Objects[4].isInteractive = true;
@@ -138,18 +144,29 @@ void InitGameObjects(){
     Objects[4].healthPoints = 3;
 
     Objects[5].name = "ROCK";
+    Objects[5].id = 5;
     Objects[5].path = "Images/rock.png";
     Objects[5].canPlayerEnter = false;
     Objects[5].isInteractive = true;
     Objects[5].isPlayer = false;
     Objects[5].healthPoints = 10;
-    Objects[5].vulnerableToID = 0;
+    Objects[5].vulnerableToID = 1;
 
     Objects[6].name = "WAVE";
+    Objects[6].id = 6;    
     Objects[6].path = "Images/wave.png";
     Objects[6].canPlayerEnter = false;
     Objects[6].isInteractive = false;
     Objects[6].isPlayer = false;
+
+    Objects[7].name = "STONE OF POWER";
+    Objects[7].id = 7;
+    Objects[7].path = "Images/stone.png";
+    Objects[7].canPlayerEnter = false;
+    Objects[7].isInteractive = true;
+    Objects[7].isPlayer = false;
+    Objects[7].healthPoints = 1;
+    Objects[7].vulnerableToID = 0;
 }
 
 void InitInventory(GtkCssProvider *cssProvider){
@@ -186,7 +203,7 @@ void Init(){
     InitGameObjects();
     InitMap();
     InitScreen(grid,cssProvider);
-    g_timeout_add(100,UpdatePower,NULL);
+    g_timeout_add(1000,UpdatePower,NULL);
     gtk_container_add(GTK_CONTAINER(window),GTK_WIDGET(grid));
     g_signal_connect (G_OBJECT (window), "key_press_event", G_CALLBACK (OnKeyPress), NULL);
     g_signal_connect (G_OBJECT (window), "destroy",G_CALLBACK(CleanUp), NULL);

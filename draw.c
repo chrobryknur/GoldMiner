@@ -58,31 +58,53 @@ int UpdatePower(){
     return 0;
 }
 
-void Attack(Direction dir){
-    switch(dir){
-        case LEFT:
-            //printf("SIEMA");
+void DropItem(GameObject object){
+    switch(object.id){
+        case 4:             //GRASS2
             break;
-            /*if(Map[PLAYER_X_ABSOLUTE-1][PLAYER_Y_ABSOLUTE].object.isInteractive){
-                if(Map[PLAYER_X_ABSOLUTE-1][PLAYER_Y_ABSOLUTE].object.vulnerableToID == EquippedItem->id){
-                    Map[PLAYER_X_ABSOLUTE-1][PLAYER_Y_ABSOLUTE].object.healthPoints--;
-                    if(!Map[PLAYER_X_ABSOLUTE-1][PLAYER_Y_ABSOLUTE].object.healthPoints){
-                        Map[PLAYER_X_ABSOLUTE-1][PLAYER_Y_ABSOLUTE].object = Objects[0];
-                        Map[PLAYER_X_ABSOLUTE-1][PLAYER_Y_ABSOLUTE].current = Objects[0];
-                    }
-                }
-            }
-            break;*/
-        case RIGHT:
-
+        case 7:             //STONE OF POWER
+            if(Power+10<=100.0)
+                Power+=10;
+            else Power = 100.0;
+            UpdatePower();
             break;
-        case UP:
-
+        case 5:             //ROCK
             break;
-
-        case DOWN:
-
+        case 2:             //TREE
             break;
     }
+}
+
+void InteractWithObject(MapSquare *pointer){
+    if(pointer->object.isInteractive &&
+    (pointer->object.vulnerableToID == EquippedItem->id ||
+    !pointer->object.vulnerableToID)){
+        pointer->object.healthPoints--;
+        if(!pointer->object.healthPoints){
+            DropItem(pointer->object);
+            pointer->object = Objects[1];
+            pointer->current = Objects[1];
+        }
+    }
+
+}
+
+void Attack(Direction dir){
+    MapSquare* pointer;
+    switch(dir){
+        case LEFT:
+            pointer = &Map[PLAYER_X_ABSOLUTE-1][PLAYER_Y_ABSOLUTE];
+            break;
+        case RIGHT:
+            pointer = &Map[PLAYER_X_ABSOLUTE+1][PLAYER_Y_ABSOLUTE];
+            break;
+        case UP:
+            pointer = &Map[PLAYER_X_ABSOLUTE][PLAYER_Y_ABSOLUTE-1];
+            break;
+        case DOWN:
+            pointer = &Map[PLAYER_X_ABSOLUTE][PLAYER_Y_ABSOLUTE+1];
+            break;
+    }
+    InteractWithObject(pointer);
     UpdateBoard();
 }

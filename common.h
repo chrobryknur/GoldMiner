@@ -12,9 +12,9 @@
 #define INVENTORY_PNG_SIZE 48
 #define WINDOW_HEIGHT ROWS*PNG_SIZE
 #define WINDOW_WIDTH  COLS*PNG_SIZE
-#define MAP_SIZE_X 256
-#define MAP_SIZE_Y 256
-#define GAME_OBJECTS 7
+#define MAP_SIZE_X 512
+#define MAP_SIZE_Y 512
+#define GAME_OBJECTS 8
 #define PLAYER_X_RELATIVE COLS/2-1
 #define PLAYER_Y_RELATIVE ROWS/2-1
 #define PLAYER_X_ABSOLUTE PLAYER_X_RELATIVE + topleft_x_absolute
@@ -28,6 +28,7 @@ int topleft_y_absolute;
 typedef struct GameObject{
     char *name;
     char *path;
+    int id;
     bool canPlayerEnter;
     bool isInteractive;
     bool isPlayer;
