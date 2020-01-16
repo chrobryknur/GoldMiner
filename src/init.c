@@ -88,13 +88,13 @@ void InitItems(){
     AllItems[0].id = 0;
     AllItems[0].name = "Empty";
     AllItems[0].quantity = 0;
-    AllItems[0].path = "Images/noitem.png";
+    AllItems[0].path = "../Images/noitem.png";
     AllItems[0].wearable = false;
 
     AllItems[1].id =  1;
     AllItems[1].name = "Fists";
     AllItems[1].quantity = 1;
-    AllItems[1].path = "Images/fist.png";
+    AllItems[1].path = "../Images/fist.png";
     AllItems[1].wearable = true;
 }
 
@@ -108,35 +108,35 @@ GameObject CreateObject(char *name, char *path, bool canPlayerEnter, bool isInte
 void InitGameObjects(){
     Objects[0].name = "PLAYER";
     Objects[0].id = 0;
-    Objects[0].path = "Images/player.png";
+    Objects[0].path = "../Images/player.png";
     Objects[0].canPlayerEnter = true;
     Objects[0].isInteractive = true;
     Objects[0].isPlayer = true;
 
     Objects[1].name = "GRASS";
     Objects[1].id = 1;
-    Objects[1].path = "Images/grass.png";
+    Objects[1].path = "../Images/grass.png";
     Objects[1].canPlayerEnter = true;
     Objects[1].isInteractive = true;
     Objects[1].isPlayer = false;
 
     Objects[2].name = "TREE";
     Objects[2].id = 2;
-    Objects[2].path = "Images/tree.png";
+    Objects[2].path = "../Images/tree.png";
     Objects[2].canPlayerEnter = false;
     Objects[2].isInteractive = true;
     Objects[2].isPlayer = false;
 
     Objects[3].name = "LAKE";
     Objects[3].id = 3;    
-    Objects[3].path = "Images/lake.png";
+    Objects[3].path = "../Images/lake.png";
     Objects[3].canPlayerEnter = false;
     Objects[3].isInteractive = false;
     Objects[3].isPlayer = false;
 
     Objects[4].name = "GRASS2";
     Objects[4].id = 4;
-    Objects[4].path = "Images/grass2.png";
+    Objects[4].path = "../Images/grass2.png";
     Objects[4].canPlayerEnter = false;
     Objects[4].isInteractive = true;
     Objects[4].isPlayer = false;
@@ -145,7 +145,7 @@ void InitGameObjects(){
 
     Objects[5].name = "ROCK";
     Objects[5].id = 5;
-    Objects[5].path = "Images/rock.png";
+    Objects[5].path = "../Images/rock.png";
     Objects[5].canPlayerEnter = false;
     Objects[5].isInteractive = true;
     Objects[5].isPlayer = false;
@@ -154,14 +154,14 @@ void InitGameObjects(){
 
     Objects[6].name = "WAVE";
     Objects[6].id = 6;    
-    Objects[6].path = "Images/wave.png";
+    Objects[6].path = "../Images/wave.png";
     Objects[6].canPlayerEnter = false;
     Objects[6].isInteractive = false;
     Objects[6].isPlayer = false;
 
     Objects[7].name = "STONE OF POWER";
     Objects[7].id = 7;
-    Objects[7].path = "Images/stone.png";
+    Objects[7].path = "../Images/stone.png";
     Objects[7].canPlayerEnter = false;
     Objects[7].isInteractive = true;
     Objects[7].isPlayer = false;
@@ -207,7 +207,7 @@ void Init(){
     gtk_container_add(GTK_CONTAINER(window),GTK_WIDGET(grid));
     g_signal_connect (G_OBJECT (window), "key_press_event", G_CALLBACK (OnKeyPress), NULL);
     g_signal_connect (G_OBJECT (window), "destroy",G_CALLBACK(CleanUp), NULL);
-    gtk_css_provider_load_from_path(cssProvider,"Style/gtk.css",NULL);
+    gtk_css_provider_load_from_path(cssProvider,"../Style/gtk.css",NULL);
     gtk_widget_show_all(window);
     gtk_main();
 }
