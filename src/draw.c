@@ -58,19 +58,57 @@ int UpdatePower(){
     return 0;
 }
 
+void CraftItem(int id){
+    switch (id)
+    {
+    case 5:
+        if(Inventory[7].quantity && Inventory[8].quantity && Inventory[9].quantity){
+            for(int i=7;i<=9;i++){
+                if(!(--Inventory[i].quantity)){
+                    UpdateInventory(i,0);
+                }
+            }
+            UpdateInventory(2,5);
+        }
+        break;
+    
+    default:
+        break;
+    }
+}
+
+void UpdateInventory(int inventoryid,int itemid){
+    Square *position;
+    if(Inventory[inventoryid].id != AllItems[itemid].id){
+                    position = Inventory[inventoryid].position;
+                    Inventory[inventoryid] = AllItems[itemid];
+                    Inventory[inventoryid].position = position;
+                    gtk_image_set_from_file(GTK_IMAGE(Inventory[inventoryid].position->image),Inventory[inventoryid].path);
+                }
+                else Inventory[inventoryid].quantity++;
+                char text[100];
+                sprintf(text,"%d",Inventory[inventoryid].quantity);
+                gtk_label_set_text(GTK_LABEL(hourLabel),text);
+}
+
 void DropItem(GameObject object){
+                Square *position;
     switch(object.id){
         case 4:             //GRASS2
+            UpdateInventory(9 ,2);
             break;
         case 7:             //STONE OF POWER
-            if(Power+10<=100.0)
-                Power+=10;
-            else Power = 100.0;
-            UpdatePower();
+            UpdateInventory(1,6);
             break;
         case 5:             //ROCK
             break;
         case 2:             //TREE
+            break;
+        case 8:
+            UpdateInventory(8,3);
+            break;
+        case 9:
+            UpdateInventory(7,4);
             break;
     }
 }
@@ -107,4 +145,17 @@ void Attack(Direction dir){
     }
     InteractWithObject(pointer);
     UpdateBoard();
+}
+
+void UsePotion(){
+    if(Inventory[1].quantity){
+        Inventory[1].quantity--;
+        if(!Inventory[1].quantity){
+            UpdateInventory(1,0);
+        }
+        if(Power+10<=100.0)
+            Power+=10;
+        else Power = 100.0;
+        UpdatePower();
+    }
 }

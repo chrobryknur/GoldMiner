@@ -14,13 +14,13 @@
 #define WINDOW_WIDTH  COLS*PNG_SIZE
 #define MAP_SIZE_X 512
 #define MAP_SIZE_Y 512
-#define GAME_OBJECTS 8
+#define GAME_OBJECTS 10
 #define PLAYER_X_RELATIVE COLS/2-1
 #define PLAYER_Y_RELATIVE ROWS/2-1
 #define PLAYER_X_ABSOLUTE PLAYER_X_RELATIVE + topleft_x_absolute
 #define PLAYER_Y_ABSOLUTE PLAYER_Y_RELATIVE + topleft_y_absolute
 #define INVENTORY_SIZE 10
-#define ALL_ITEMS_NUM 2
+#define ALL_ITEMS_NUM 8
 
 int topleft_x_absolute;
 int topleft_y_absolute;
@@ -77,7 +77,10 @@ GtkWidget *hourLabel;
 
 void OnKeyPress(GtkWidget *widget, GdkEventKey *event);
 void Attack(Direction dir);
+void UpdateInventory(int inventoryid, int itemid);
 void UpdateScreen(Direction dir);
+void UsePotion();
+void CraftItem(int id);
 int UpdatePower();
 void CleanUp();
 void Help();
