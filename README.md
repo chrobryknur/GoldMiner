@@ -1,12 +1,13 @@
 # Projekt-Marcin-Dabrowski
 
-Walking WASD
-Attack:
-H - left
-J - down
-K - up
-L - right
-Craft/Equip
-1 - Axe (stick, rock, grass)
-2 - Pickaxe (wood log, rock, grass)
-3 - Shovel (2 sticks, rock)
+Chodzenie:
+WASD    
+Atak:  
+H - lewo  
+J - dół  
+K - góra   
+L - prawo  
+Craftowanie/zakładanie przedmiotów:  
+1 - topór (patyk, kamień, trawa)  
+2 - kilof (drewno, kamień, trawa)   
+3 - łopata (2x patyk, kamień)   
