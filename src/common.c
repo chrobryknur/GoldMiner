@@ -30,10 +30,10 @@ void OnKeyPress(GtkWidget *widget, GdkEventKey *event){
         UsePotion();
         break;
     case '3':
-        if(Inventory[2].id!=5 && Inventory[7].quantity && Inventory[8].quantity && Inventory[9].quantity){
-            UpdateInventory(2,5);
+        if(Inventory[2].id!=5){
+            CraftItem(5);
         }
-        else if(Inventory[2].id == 5) EquippedItem = &Inventory[2];
+        else EquippedItem = &Inventory[2];
         break;
     }
 }

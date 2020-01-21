@@ -59,7 +59,22 @@ int UpdatePower(){
 }
 
 void CraftItem(int id){
-
+    switch (id)
+    {
+    case 5:
+        if(Inventory[7].quantity && Inventory[8].quantity && Inventory[9].quantity){
+            for(int i=7;i<=9;i++){
+                if(!(--Inventory[i].quantity)){
+                    UpdateInventory(i,0);
+                }
+            }
+            UpdateInventory(2,5);
+        }
+        break;
+    
+    default:
+        break;
+    }
 }
 
 void UpdateInventory(int inventoryid,int itemid){
