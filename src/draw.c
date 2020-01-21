@@ -58,9 +58,25 @@ int UpdatePower(){
     return 0;
 }
 
+void UpdateInventory(int inventoryid,int itemid){
+    Square *position;
+    if(Inventory[inventoryid].id != AllItems[itemid].id){
+                    position = Inventory[inventoryid].position;
+                    Inventory[inventoryid] = AllItems[itemid];
+                    Inventory[inventoryid].position = position;
+                    gtk_image_set_from_file(GTK_IMAGE(Inventory[inventoryid].position->image),Inventory[inventoryid].path);
+                }
+                else Inventory[inventoryid].quantity++;
+                char text[100];
+                sprintf(text,"%d",Inventory[inventoryid].quantity);
+                gtk_label_set_text(GTK_LABEL(hourLabel),text);
+}
+
 void DropItem(GameObject object){
+                Square *position;
     switch(object.id){
         case 4:             //GRASS2
+            UpdateInventory(9 ,2);
             break;
         case 7:             //STONE OF POWER
             if(Power+10<=100.0)
@@ -71,6 +87,9 @@ void DropItem(GameObject object){
         case 5:             //ROCK
             break;
         case 2:             //TREE
+            break;
+        case 8:
+            UpdateInventory(8,3);
             break;
     }
 }
