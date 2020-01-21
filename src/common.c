@@ -31,10 +31,21 @@ void OnKeyPress(GtkWidget *widget, GdkEventKey *event){
         break;
     case '3':
         if(Inventory[2].id!=5){
-            CraftItem(5);
+            CraftItem(5); //craft axe
         }
         else EquippedItem = &Inventory[2];
         break;
+    case '4':
+        if(Inventory[3].id!=8){
+            CraftItem(8);
+        }
+        else EquippedItem = &Inventory[3];
+        break;
+    case '5':
+        if(Inventory[4].id!=13){
+            CraftItem(13);
+        }
+        else EquippedItem = &Inventory[4]; 
     }
 }
 void CleanUp(){

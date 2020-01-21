@@ -71,9 +71,27 @@ void CraftItem(int id){
             UpdateInventory(2,5);
         }
         break;
-    
-    default:
+    case 8:
+        if(Inventory[5].quantity && Inventory[8].quantity && Inventory[9].quantity){
+            for(int i=5;i<=9;i++){
+                if(i==6 || i==7) continue;
+                if(!(--Inventory[i].quantity)){
+                    UpdateInventory(i,0);
+                }
+            }
+            UpdateInventory(3,8);
+        }
         break;
+    case 13:
+        if(Inventory[7].quantity && Inventory[9].quantity){
+            for(int i=7;i<=8;i++){
+                if(i == 8) continue;
+                if(!(--Inventory[i].quantity)){
+                    UpdateInventory(i,0);
+                }
+            }
+            UpdateInventory(4,13);
+        }
     }
 }
 
@@ -101,15 +119,22 @@ void DropItem(GameObject object){
             UpdateInventory(1,6);
             break;
         case 5:             //ROCK
-            break;
-        case 2:             //TREE
-            break;
-        case 8:
             UpdateInventory(8,3);
             break;
-        case 9:
+        case 2:             //TREE
+            UpdateInventory(5,10);
+            break;
+        case 8:             //SMALL ROCK    
+            UpdateInventory(8,3);
+            break;
+        case 9:             //STICK
             UpdateInventory(7,4);
             break;
+        case 10:            //GOLD
+            UpdateInventory(6,11);
+            break;
+        case 11:
+            UpdateInventory(5,14);
     }
 }
 
