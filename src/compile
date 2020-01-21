@@ -1,0 +1,2 @@
+#!/bin/bash
+gcc `pkg-config gtk+-3.0 --cflags` main.c init.c common.c draw.c `pkg-config --libs gtk+-3.0` -lm
