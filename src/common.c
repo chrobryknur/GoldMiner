@@ -26,26 +26,28 @@ void OnKeyPress(GtkWidget *widget, GdkEventKey *event){
     case 'j': //DownArrow
         Attack(DOWN);
         break;
+
+    case '1':
+        if(Inventory[0].id!=8){
+            CraftItem(8); //craft axe
+        }
+        else EquippedItem = &Inventory[0];
+        break;
     case '2':
-        UsePotion();
+        if(Inventory[1].id!=10){
+            CraftItem(10);
+        }
+        else EquippedItem = &Inventory[1];
         break;
     case '3':
-        if(Inventory[2].id!=5){
-            CraftItem(5); //craft axe
-        }
-        else EquippedItem = &Inventory[2];
-        break;
-    case '4':
-        if(Inventory[3].id!=8){
-            CraftItem(8);
-        }
-        else EquippedItem = &Inventory[3];
-        break;
-    case '5':
-        if(Inventory[4].id!=13){
+        if(Inventory[2].id!=13){
             CraftItem(13);
         }
-        else EquippedItem = &Inventory[4]; 
+        else EquippedItem = &Inventory[2]; 
+        break;
+    case '4':
+        UsePotion();
+        break;
     }
 }
 void CleanUp(){

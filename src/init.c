@@ -104,20 +104,20 @@ Item CreateItem(char *name, char *path, int id, int quantity, bool wearable){
 void InitItems(){
     AllItems = malloc(ALL_ITEMS_NUM*sizeof(Item));
     AllItems[0] = CreateItem("Empty","../Images/noitem.png",0,0,false);
-    AllItems[1] = CreateItem("Fists","../Images/fist.png",1,1,true);
-    AllItems[2] = CreateItem("Grass","../Images/grassitem.png",2,1,false);
-    AllItems[3] = CreateItem("Rocks","../Images/smallrockitem.png",3,1,false);
-    AllItems[4] = CreateItem("Stick","../Images/stickitem.png",4,1,false);
-    AllItems[5] = CreateItem("Axe","../Images/axe.png",5,1,true);
-    AllItems[6] = CreateItem("Potion","../Images/potion.png",6,1,false);
-    AllItems[7] = CreateItem("AxeShape","../Images/axeempty.png",7,0,false);
-    AllItems[8] = CreateItem("Pickaxe","../Images/pickaxe.png",8,1,true);
-    AllItems[9] = CreateItem("PickaxeShape","../Images/pickaxeempty.png",9,1,false);
-    AllItems[10] = CreateItem("Wood Log","../Images/woodlog.png",10,1,false);
-    AllItems[11] = CreateItem("Gold Nugget","../Images/goldnugget.png",11,1,false);
+    AllItems[1] = CreateItem("Grass","../Images/grassitem.png",1,1,false);
+    AllItems[2] = CreateItem("Rocks","../Images/smallrockitem.png",2,1,false);
+    AllItems[3] = CreateItem("Stick","../Images/stickitem.png",3,1,false);
+    AllItems[4] = CreateItem("Wood Log","../Images/woodlog.png",4,1,false);
+    AllItems[5] = CreateItem("Gold Nugget","../Images/goldnugget.png",5,1,false);
+    AllItems[6] = CreateItem("Dirt","../Images/dirt.png",6,1,false);
+    AllItems[7] = CreateItem("Potion","../Images/potion.png",7,1,false);
+    AllItems[8] = CreateItem("Axe","../Images/axe.png",8,1,true);
+    AllItems[9] = CreateItem("AxeShape","../Images/axeempty.png",9,0,false);
+    AllItems[10] = CreateItem("Pickaxe","../Images/pickaxe.png",10,1,true);
+    AllItems[11] = CreateItem("PickaxeShape","../Images/pickaxeempty.png",11,1,false);
     AllItems[12] = CreateItem("ShovelShape","../Images/shovelempty.png",12,1,false);
     AllItems[13] = CreateItem("Shovel","../Images/shovel.png",13,1,true);
-    AllItems[14] = CreateItem("Dirt","../Images/dirt.png",14,1,false);
+    
 }
 
 GameObject CreateObject(char *name, char *path,int id, bool canPlayerEnter, bool isInteractive, bool isPlayer, int vulnerableToID,int healthPoints){
@@ -136,28 +136,27 @@ GameObject CreateObject(char *name, char *path,int id, bool canPlayerEnter, bool
 void InitGameObjects(){
     Objects[0] = CreateObject("PLAYER","../Images/player.png",0,true,true,true,0,0);
     Objects[1] = CreateObject("GRASS","../Images/grass.png",1,true,true,false,0,0);
-    Objects[2] = CreateObject("TREE","../Images/tree.png",2,false,true,false,5,10);
+    Objects[2] = CreateObject("TREE","../Images/tree.png",2,false,true,false,8,10);
     Objects[3] = CreateObject("LAKE","../Images/lake.png",3,false,false,false,0,0);
     Objects[4] = CreateObject("GRASS2","../Images/grass2.png",4,false,true,false,0,3);
-    Objects[5] = CreateObject("ROCK","../Images/rock.png",5,false,true,false,8,10);
+    Objects[5] = CreateObject("ROCK","../Images/rock.png",5,false,true,false,10,10);
     Objects[6] = CreateObject("WAVE","../Images/wave.png",6,false,false,false,0,0);
     Objects[7] = CreateObject("STONE OF POWER","../Images/stone.png",7,false,true,false,0,1);
     Objects[8] = CreateObject("SMALL ROCK","../Images/smallrock.png",8,false,true,false,0,1);
     Objects[9] = CreateObject("STICK","../Images/stick.png",9,false,true,false,0,1);
-    Objects[10] = CreateObject("GOLD ORE","../Images/goldore.png",10,false,true,false,8,20);
+    Objects[10] = CreateObject("GOLD ORE","../Images/goldore.png",10,false,true,false,10,20);
     Objects[11] = CreateObject("SOIL","../Images/soil.png",11,false,true,false,13,5);
 }
 
 void InitInventory(GtkCssProvider *cssProvider){
     EquippedItem = &AllItems[0];
     Inventory = malloc(INVENTORY_SIZE*sizeof(Item));
+    Inventory[0]=AllItems[9]; //AxeShape
+    Inventory[1]=AllItems[11]; //PickaxeShape
+    Inventory[2]=AllItems[12]; //ShovelShape
     for(int i=0;i<INVENTORY_SIZE;i++){
-       
-        if(i == 2) Inventory[i] = AllItems[7];
-        else if(i == 3) Inventory[i] = AllItems[9];
-        else if(i == 4) Inventory[i] = AllItems[12];
-        else if(i) Inventory[i] = AllItems[0];
-        else Inventory[i] = AllItems[1];
+        if(i>2)
+            Inventory[i] = AllItems[0];
         Inventory[i].position = malloc(sizeof(Square));
         Inventory[i].position->image = gtk_image_new();
         gtk_image_set_from_file(GTK_IMAGE(Inventory[i].position->image),Inventory[i].path);

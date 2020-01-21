@@ -20,7 +20,7 @@
 #define PLAYER_X_ABSOLUTE PLAYER_X_RELATIVE + topleft_x_absolute
 #define PLAYER_Y_ABSOLUTE PLAYER_Y_RELATIVE + topleft_y_absolute
 #define INVENTORY_SIZE 10
-#define ALL_ITEMS_NUM 15
+#define ALL_ITEMS_NUM 14
 
 int topleft_x_absolute;
 int topleft_y_absolute;

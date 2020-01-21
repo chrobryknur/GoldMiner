@@ -58,40 +58,34 @@ int UpdatePower(){
     return 0;
 }
 
+void Craft(int item1,int item2, int item3, int wheretoput, int whattoput){
+    if(Inventory[item1].quantity && Inventory[item2].quantity && Inventory[item3].quantity){
+        if(!(--Inventory[item1].quantity)){
+
+                    UpdateInventory(item1,0);
+        }
+        if(!(--Inventory[item2].quantity)){
+                    UpdateInventory(item2,0);
+        }
+        if(!(--Inventory[item3].quantity)){
+                    UpdateInventory(item3,0);
+        }
+        UpdateInventory(wheretoput,whattoput);
+    }
+}
+
 void CraftItem(int id){
     switch (id)
     {
-    case 5:
-        if(Inventory[7].quantity && Inventory[8].quantity && Inventory[9].quantity){
-            for(int i=7;i<=9;i++){
-                if(!(--Inventory[i].quantity)){
-                    UpdateInventory(i,0);
-                }
-            }
-            UpdateInventory(2,5);
-        }
+    case 8: //axe
+        Craft(7,8,9,0,8); //stick, rock, grass, first pos in inventory, axe
         break;
-    case 8:
-        if(Inventory[5].quantity && Inventory[8].quantity && Inventory[9].quantity){
-            for(int i=5;i<=9;i++){
-                if(i==6 || i==7) continue;
-                if(!(--Inventory[i].quantity)){
-                    UpdateInventory(i,0);
-                }
-            }
-            UpdateInventory(3,8);
-        }
+    case 10:
+        Craft(6,8,9,1,10);//wood log,rock,grass, second pos in inventory, pickaxe
         break;
     case 13:
-        if(Inventory[7].quantity && Inventory[9].quantity){
-            for(int i=7;i<=8;i++){
-                if(i == 8) continue;
-                if(!(--Inventory[i].quantity)){
-                    UpdateInventory(i,0);
-                }
-            }
-            UpdateInventory(4,13);
-        }
+        Craft(7,7,8,2,13);//2 sticks, rock, third pos, shovel 
+        break;
     }
 }
 
@@ -110,31 +104,31 @@ void UpdateInventory(int inventoryid,int itemid){
 }
 
 void DropItem(GameObject object){
-                Square *position;
+    Square *position;
     switch(object.id){
         case 4:             //GRASS2
-            UpdateInventory(9 ,2);
+            UpdateInventory(9 ,1);
             break;
         case 7:             //STONE OF POWER
-            UpdateInventory(1,6);
+            UpdateInventory(3,7);
             break;
         case 5:             //ROCK
-            UpdateInventory(8,3);
+            UpdateInventory(8,2);
             break;
         case 2:             //TREE
-            UpdateInventory(5,10);
+            UpdateInventory(6,4);
             break;
         case 8:             //SMALL ROCK    
-            UpdateInventory(8,3);
+            UpdateInventory(8,2);
             break;
         case 9:             //STICK
-            UpdateInventory(7,4);
+            UpdateInventory(7,3);
             break;
         case 10:            //GOLD
-            UpdateInventory(6,11);
+            UpdateInventory(4,5);
             break;
-        case 11:
-            UpdateInventory(5,14);
+        case 11:            //DIRT
+            UpdateInventory(5,6);
     }
 }
 
@@ -173,10 +167,10 @@ void Attack(Direction dir){
 }
 
 void UsePotion(){
-    if(Inventory[1].quantity){
-        Inventory[1].quantity--;
-        if(!Inventory[1].quantity){
-            UpdateInventory(1,0);
+    if(Inventory[3].quantity){
+        Inventory[3].quantity--;
+        if(!Inventory[3].quantity){
+            UpdateInventory(3,0);
         }
         if(Power+10<=100.0)
             Power+=10;
