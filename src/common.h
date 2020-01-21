@@ -37,7 +37,7 @@ typedef struct GameObject{
 }GameObject;
 
 typedef struct MapSquare{
-    GameObject current;
+    GameObject current; 
     GameObject object;
 }MapSquare;
 
