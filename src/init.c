@@ -64,6 +64,7 @@ GameObject RandomObject(){
     if(x<15) return Objects[5];
     if(x<17) return  Objects[7];
     if(x<18) return Objects[8];
+    if(x<19) return Objects[9];
     return Objects[1];
 }
 
@@ -103,7 +104,11 @@ void InitItems(){
     AllItems[0] = CreateItem("Empty","../Images/noitem.png",0,0,false);
     AllItems[1] = CreateItem("Fists","../Images/fist.png",1,1,true);
     AllItems[2] = CreateItem("Grass","../Images/grassitem.png",2,1,false);
-    AllItems[3] = CreateItem("Rocks","../Images/smallrockinventory.png",3,1,false);
+    AllItems[3] = CreateItem("Rocks","../Images/smallrockitem.png",3,1,false);
+    AllItems[4] = CreateItem("Stick","../Images/stickitem.png",4,1,false);
+    AllItems[5] = CreateItem("Axe","../Images/axe.png",5,1,true);
+    AllItems[6] = CreateItem("Potion","../Images/potion.png",6,1,false);
+    AllItems[7] = CreateItem("AxeShape","../Images/axeempty.png",7,0,false);
 }
 
 GameObject CreateObject(char *name, char *path,int id, bool canPlayerEnter, bool isInteractive, bool isPlayer, int vulnerableToID,int healthPoints){
@@ -122,20 +127,23 @@ GameObject CreateObject(char *name, char *path,int id, bool canPlayerEnter, bool
 void InitGameObjects(){
     Objects[0] = CreateObject("PLAYER","../Images/player.png",0,true,true,true,0,0);
     Objects[1] = CreateObject("GRASS","../Images/grass.png",1,true,true,false,0,0);
-    Objects[2] = CreateObject("TREE","../Images/tree.png",2,false,true,false,3,10);
+    Objects[2] = CreateObject("TREE","../Images/tree.png",2,false,true,false,5,10);
     Objects[3] = CreateObject("LAKE","../Images/lake.png",3,false,false,false,0,0);
     Objects[4] = CreateObject("GRASS2","../Images/grass2.png",4,false,true,false,0,3);
     Objects[5] = CreateObject("ROCK","../Images/rock.png",5,false,true,false,1,10);
     Objects[6] = CreateObject("WAVE","../Images/wave.png",6,false,false,false,0,0);
     Objects[7] = CreateObject("STONE OF POWER","../Images/stone.png",7,false,true,false,0,1);
     Objects[8] = CreateObject("SMALL ROCK","../Images/smallrock.png",8,false,true,false,0,1);
+    Objects[9] = CreateObject("STICK","../Images/stick.png",9,false,true,false,0,1);
 }
 
 void InitInventory(GtkCssProvider *cssProvider){
     EquippedItem = &AllItems[0];
     Inventory = malloc(INVENTORY_SIZE*sizeof(Item));
     for(int i=0;i<INVENTORY_SIZE;i++){
-        if(i) Inventory[i] = AllItems[0];
+       
+        if(i == 2) Inventory[i] = AllItems[7];
+        else if(i) Inventory[i] = AllItems[0];
         else Inventory[i] = AllItems[1];
         Inventory[i].position = malloc(sizeof(Square));
         Inventory[i].position->image = gtk_image_new();

@@ -20,16 +20,28 @@ void OnKeyPress(GtkWidget *widget, GdkEventKey *event){
     case 'l': //RightArrow
         Attack(RIGHT);
         break;
-    case 'j': //UpArrow
+    case 'k': //UpArrow
         Attack(UP);
         break;
-    case 'k': //DownArrow
+    case 'j': //DownArrow
         Attack(DOWN);
+        break;
+    case '2':
+        UsePotion();
+        break;
+    case '3':
+        if(Inventory[2].id!=5 && Inventory[7].quantity && Inventory[8].quantity && Inventory[9].quantity){
+            UpdateInventory(2,5);
+        }
+        else if(Inventory[2].id == 5) EquippedItem = &Inventory[2];
         break;
     }
 }
 void CleanUp(){
     free(AllItems);
+    for(int i=0;i<COLS;i++){
+        free(Board[i]);
+    }
     free(Inventory);
     free(Board);
     gtk_main_quit();

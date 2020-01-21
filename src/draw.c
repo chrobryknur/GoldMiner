@@ -58,6 +58,10 @@ int UpdatePower(){
     return 0;
 }
 
+void CraftItem(int id){
+
+}
+
 void UpdateInventory(int inventoryid,int itemid){
     Square *position;
     if(Inventory[inventoryid].id != AllItems[itemid].id){
@@ -79,10 +83,7 @@ void DropItem(GameObject object){
             UpdateInventory(9 ,2);
             break;
         case 7:             //STONE OF POWER
-            if(Power+10<=100.0)
-                Power+=10;
-            else Power = 100.0;
-            UpdatePower();
+            UpdateInventory(1,6);
             break;
         case 5:             //ROCK
             break;
@@ -90,6 +91,9 @@ void DropItem(GameObject object){
             break;
         case 8:
             UpdateInventory(8,3);
+            break;
+        case 9:
+            UpdateInventory(7,4);
             break;
     }
 }
@@ -126,4 +130,17 @@ void Attack(Direction dir){
     }
     InteractWithObject(pointer);
     UpdateBoard();
+}
+
+void UsePotion(){
+    if(Inventory[1].quantity){
+        Inventory[1].quantity--;
+        if(!Inventory[1].quantity){
+            UpdateInventory(1,0);
+        }
+        if(Power+10<=100.0)
+            Power+=10;
+        else Power = 100.0;
+        UpdatePower();
+    }
 }
