@@ -60,15 +60,17 @@ int UpdatePower(){
 
 void Craft(int item1,int item2, int item3, int wheretoput, int whattoput){
     if(Inventory[item1].quantity && Inventory[item2].quantity && Inventory[item3].quantity){
-        if(!(--Inventory[item1].quantity)){
-
-                    UpdateInventory(item1,0);
+        if(!(Inventory[item1].quantity-1)){
+            Inventory[item1].quantity--;
+            UpdateInventory(item1,0);
         }
-        if(!(--Inventory[item2].quantity)){
-                    UpdateInventory(item2,0);
+        if(!(Inventory[item2].quantity-1)){
+            Inventory[item2].quantity--;
+            UpdateInventory(item2,0);
         }
-        if(!(--Inventory[item3].quantity)){
-                    UpdateInventory(item3,0);
+        if(!(Inventory[item3].quantity-1)){
+            Inventory[item3].quantity--;
+            UpdateInventory(item3,0);
         }
         UpdateInventory(wheretoput,whattoput);
     }
