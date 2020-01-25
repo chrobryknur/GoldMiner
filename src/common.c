@@ -1,5 +1,14 @@
 #include "common.h"
 
+void EquipItem(int index_in_inventory){
+    EquippedItem = &Inventory[index_in_inventory];
+        gtk_widget_set_name(GTK_WIDGET(ItemLabels[index_in_inventory]), "activeLabel");
+    for(int i=0;i<INVENTORY_SIZE;i++){
+        if(i!=index_in_inventory)
+            gtk_widget_set_name(GTK_WIDGET(ItemLabels[i]), "unactiveLabel");
+    }
+}
+
 void OnKeyPress(GtkWidget *widget, GdkEventKey *event){
     switch(event->keyval){
     case 'w':
@@ -14,16 +23,16 @@ void OnKeyPress(GtkWidget *widget, GdkEventKey *event){
     case 'd':
         UpdateScreen(RIGHT);
         break;
-    case 'h': //LeftArrow
+    case 65361: //LeftArrow
         Attack(LEFT);
         break;
-    case 'l': //RightArrow
+    case 65363: //RightArrow
         Attack(RIGHT);
         break;
-    case 'k': //UpArrow
+    case 65362: //UpArrow
         Attack(UP);
         break;
-    case 'j': //DownArrow
+    case 65364: //DownArrow
         Attack(DOWN);
         break;
 
@@ -31,19 +40,21 @@ void OnKeyPress(GtkWidget *widget, GdkEventKey *event){
         if(Inventory[0].id!=8){
             CraftItem(8); //craft axe
         }
-        else EquippedItem = &Inventory[0];
+        else {
+            EquipItem(0);
+        }
         break;
     case '2':
         if(Inventory[1].id!=10){
             CraftItem(10);
         }
-        else EquippedItem = &Inventory[1];
+        else EquipItem(1);
         break;
     case '3':
         if(Inventory[2].id!=13){
             CraftItem(13);
         }
-        else EquippedItem = &Inventory[2]; 
+        else EquipItem(2);
         break;
     case '4':
         UsePotion();

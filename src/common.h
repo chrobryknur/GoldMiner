@@ -63,6 +63,7 @@ typedef struct Item{
     int id;
     int quantity;
     bool wearable;
+    GtkWidget *label;
 }Item;
 
 MapSquare Map[MAP_SIZE_X][MAP_SIZE_Y];
@@ -72,8 +73,12 @@ Item *Inventory;
 Item *EquippedItem;
 Item *AllItems;
 float Power;
+GtkWidget *window;
 GtkWidget *powerLeft;
 GtkWidget *hourLabel;
+GtkCssProvider *cssProvider;
+GtkWidget* InventoryGrid;
+GtkWidget** ItemLabels;
 
 void OnKeyPress(GtkWidget *widget, GdkEventKey *event);
 void Attack(Direction dir);

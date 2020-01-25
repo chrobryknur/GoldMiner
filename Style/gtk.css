@@ -1,14 +1,12 @@
 window{
-    background-color: rgb(0, 43, 6);
-}
-
-image{
-    margin-top:1px;
-    background-color: rgb(116, 116, 116);
+    background-color: rgb(0, 0, 0);
+    color:rgb(185, 185, 185);
+    font-size:12px;
 }
 
 progressbar{
     margin-top:12px;
+
 }
 
 progressbar progress {
@@ -17,10 +15,31 @@ progressbar progress {
 }
 
 label{
-    margin-top:12px;
+    border-bottom: steelblue;
+    border-width: 1px;
+    border-style: solid;
 }
 
 button{
-    min-width: 96px;
-    min-height: 46px;
+    min-width: 98px;
+    min-height: 60px;
+}
+button label{
+   border-style: none;
+}
+
+#hourLabel{
+    margin-top:12px;
+    padding-top:9px;
+    padding-bottom: 9px;
+}
+
+#boardGrid{
+    background-color: rgb(0, 51, 4);
+}
+#unactiveLabel{
+    color:rgb(185, 185, 185);
+}
+#activeLabel{
+    color:red;
 }

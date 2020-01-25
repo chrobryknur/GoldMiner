@@ -3,10 +3,7 @@
 Chodzenie:
 WASD    
 Atak:  
-H - lewo  
-J - dół  
-K - góra   
-L - prawo  
+Strzałki  
 Craftowanie/zakładanie przedmiotów:  
 1 - topór (patyk, kamień, trawa)  
 2 - kilof (drewno, kamień, trawa)   

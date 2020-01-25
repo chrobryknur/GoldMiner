@@ -10,8 +10,9 @@ void InitBoardSquare(int x, int y){
     Board[x][y]->width = WINDOW_WIDTH/COLS;
 }
 
-void InitScreen(GtkWidget* grid,GtkCssProvider *cssProvider){
+void InitScreen(GtkWidget* grid){
     GtkWidget* BoardGrid = gtk_grid_new();
+    gtk_widget_set_name(BoardGrid, "boardGrid");
     gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(BoardGrid),0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
     for(int i=0;i<COLS;i++){
         Board[i] = (Square**)malloc(ROWS*sizeof(Square*));
@@ -22,24 +23,29 @@ void InitScreen(GtkWidget* grid,GtkCssProvider *cssProvider){
         }
     }
 
+
     GtkWidget* PowerGrid = gtk_grid_new();
     gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(PowerGrid),0,WINDOW_HEIGHT,PROGRESSBAR_WIDTH,LOWER_MENU_HEIGHT);
     powerLeft = gtk_progress_bar_new();
-    gtk_style_context_add_provider(gtk_widget_get_style_context(powerLeft),GTK_STYLE_PROVIDER(cssProvider),GTK_STYLE_PROVIDER_PRIORITY_USER);
     gtk_grid_attach(GTK_GRID(PowerGrid),GTK_WIDGET(powerLeft),0,
     0,PROGRESSBAR_WIDTH,LOWER_MENU_HEIGHT/2);
     gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(powerLeft),1);
 
     hourLabel = gtk_label_new("HOUR");
-    gtk_style_context_add_provider(gtk_widget_get_style_context(hourLabel),GTK_STYLE_PROVIDER(cssProvider),GTK_STYLE_PROVIDER_PRIORITY_USER);
+    gtk_widget_set_name(hourLabel, "hourLabel");
     gtk_grid_attach(GTK_GRID(PowerGrid),GTK_WIDGET(hourLabel),0,LOWER_MENU_HEIGHT/2,PROGRESSBAR_WIDTH,LOWER_MENU_HEIGHT/2);
 
 
-    GtkWidget* InventoryGrid = gtk_grid_new();
+    InventoryGrid = gtk_grid_new();
+    ItemLabels = malloc(INVENTORY_SIZE*sizeof(GtkWidget*));
     gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(InventoryGrid),PROGRESSBAR_WIDTH,WINDOW_HEIGHT,INVENTORY_WIDTH,LOWER_MENU_HEIGHT);
     for(int i=0;i<INVENTORY_SIZE;i++){
         gtk_grid_attach(GTK_GRID(InventoryGrid),  GTK_WIDGET(Inventory[i].position->image), Inventory[i].position->left,
         Inventory[i].position->top, Inventory[i].position->width, Inventory[i].position->height);
+        if(strcmp(Inventory[i].name,"Empty"))
+            ItemLabels[i] = gtk_label_new(Inventory[i].name);
+        else ItemLabels[i] = gtk_label_new("");
+        gtk_grid_attach(GTK_GRID(InventoryGrid),GTK_WIDGET(ItemLabels[i]),Inventory[i].position->left,Inventory[i].position->top+48,48,24);
     }
 
     GtkWidget* buttonsGrid = gtk_grid_new();
@@ -51,7 +57,6 @@ void InitScreen(GtkWidget* grid,GtkCssProvider *cssProvider){
     g_signal_connect (G_OBJECT (Buttons[2]), "clicked", G_CALLBACK (CleanUp), NULL);
     gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(buttonsGrid),PROGRESSBAR_WIDTH+INVENTORY_WIDTH,WINDOW_HEIGHT,WINDOW_WIDTH-PROGRESSBAR_WIDTH-INVENTORY_WIDTH,LOWER_MENU_HEIGHT);
     for(int i=0;i<3;i++){
-        gtk_style_context_add_provider(gtk_widget_get_style_context(Buttons[i]),GTK_STYLE_PROVIDER(cssProvider),GTK_STYLE_PROVIDER_PRIORITY_USER);
         gtk_grid_attach(GTK_GRID(buttonsGrid),GTK_WIDGET(Buttons[i]),i*96,0,96,LOWER_MENU_HEIGHT);
     }
 }
@@ -112,10 +117,10 @@ void InitItems(){
     AllItems[6] = CreateItem("Dirt","../Images/dirt.png",6,1,false);
     AllItems[7] = CreateItem("Potion","../Images/potion.png",7,1,false);
     AllItems[8] = CreateItem("Axe","../Images/axe.png",8,1,true);
-    AllItems[9] = CreateItem("AxeShape","../Images/axeempty.png",9,0,false);
+    AllItems[9] = CreateItem("Axe","../Images/axeempty.png",9,0,false);
     AllItems[10] = CreateItem("Pickaxe","../Images/pickaxe.png",10,1,true);
-    AllItems[11] = CreateItem("PickaxeShape","../Images/pickaxeempty.png",11,1,false);
-    AllItems[12] = CreateItem("ShovelShape","../Images/shovelempty.png",12,1,false);
+    AllItems[11] = CreateItem("Pickaxe","../Images/pickaxeempty.png",11,1,false);
+    AllItems[12] = CreateItem("Shovel","../Images/shovelempty.png",12,1,false);
     AllItems[13] = CreateItem("Shovel","../Images/shovel.png",13,1,true);
     
 }
@@ -135,7 +140,7 @@ GameObject CreateObject(char *name, char *path,int id, bool canPlayerEnter, bool
 
 void InitGameObjects(){
     Objects[0] = CreateObject("PLAYER","../Images/player.png",0,true,true,true,0,0);
-    Objects[1] = CreateObject("GRASS","../Images/grass.png",1,true,true,false,0,0);
+    Objects[1] = CreateObject("GRASS","../Images/grasscp.png",1,true,true,false,0,0);
     Objects[2] = CreateObject("TREE","../Images/tree.png",2,false,true,false,8,10);
     Objects[3] = CreateObject("LAKE","../Images/lake.png",3,false,false,false,0,0);
     Objects[4] = CreateObject("GRASS2","../Images/grass2.png",4,false,true,false,0,3);
@@ -148,7 +153,7 @@ void InitGameObjects(){
     Objects[11] = CreateObject("SOIL","../Images/soil.png",11,false,true,false,13,5);
 }
 
-void InitInventory(GtkCssProvider *cssProvider){
+void InitInventory(){
     EquippedItem = &AllItems[0];
     Inventory = malloc(INVENTORY_SIZE*sizeof(Item));
     Inventory[0]=AllItems[9]; //AxeShape
@@ -160,7 +165,6 @@ void InitInventory(GtkCssProvider *cssProvider){
         Inventory[i].position = malloc(sizeof(Square));
         Inventory[i].position->image = gtk_image_new();
         gtk_image_set_from_file(GTK_IMAGE(Inventory[i].position->image),Inventory[i].path);
-        gtk_style_context_add_provider(gtk_widget_get_style_context(Inventory[i].position->image),GTK_STYLE_PROVIDER(cssProvider),GTK_STYLE_PROVIDER_PRIORITY_USER);
         Inventory[i].position->top = 0;
         Inventory[i].position->left = i*INVENTORY_PNG_SIZE;
         Inventory[i].position->width = INVENTORY_PNG_SIZE;
@@ -168,23 +172,28 @@ void InitInventory(GtkCssProvider *cssProvider){
     }
 }
 
+void przycisk(GtkWidget *widget, GdkEventKey *event){
+    printf("%d\n",event->keyval);
+}
+
 void Init(){
     Power = 100.0;
+    EquippedItem = NULL;
     topleft_x_absolute = MAP_SIZE_X/2 - COLS/2;
     topleft_y_absolute = MAP_SIZE_Y/2 - ROWS/2;
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    GtkCssProvider *cssProvider =  gtk_css_provider_new();
-    gtk_style_context_add_provider(gtk_widget_get_style_context(window),GTK_STYLE_PROVIDER(cssProvider),GTK_STYLE_PROVIDER_PRIORITY_USER);
+    cssProvider =  gtk_css_provider_new();
+   gtk_style_context_add_provider_for_screen(gdk_screen_get_default(), GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_USER);
     gtk_window_set_default_size(GTK_WINDOW(window),WINDOW_WIDTH,WINDOW_HEIGHT);
     gtk_window_set_resizable(GTK_WINDOW(window),FALSE);
     gtk_window_set_title(GTK_WINDOW(window),"Game");
     GtkWidget *grid = gtk_grid_new();
     Board = (Square***) malloc(COLS*sizeof(Square**));
     InitItems();
-    InitInventory(cssProvider);
+    InitInventory();
     InitGameObjects();
     InitMap();
-    InitScreen(grid,cssProvider);
+    InitScreen(grid);
     g_timeout_add(1000,UpdatePower,NULL);
     gtk_container_add(GTK_CONTAINER(window),GTK_WIDGET(grid));
     g_signal_connect (G_OBJECT (window), "key_press_event", G_CALLBACK (OnKeyPress), NULL);
@@ -192,4 +201,5 @@ void Init(){
     gtk_css_provider_load_from_path(cssProvider,"../Style/gtk.css",NULL);
     gtk_widget_show_all(window);
     gtk_main();
+
 }

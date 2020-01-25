@@ -100,9 +100,13 @@ void UpdateInventory(int inventoryid,int itemid){
                     gtk_image_set_from_file(GTK_IMAGE(Inventory[inventoryid].position->image),Inventory[inventoryid].path);
                 }
                 else Inventory[inventoryid].quantity++;
+                if(itemid&& itemid != 8 && itemid !=10 && itemid !=13){
                 char text[100];
                 sprintf(text,"%d",Inventory[inventoryid].quantity);
-                gtk_label_set_text(GTK_LABEL(hourLabel),text);
+                    gtk_label_set_text(GTK_LABEL(ItemLabels[inventoryid]),text);
+                }
+                else if(itemid) gtk_label_set_text(GTK_LABEL(ItemLabels[inventoryid]),AllItems[itemid].name);
+                else  gtk_label_set_text(GTK_LABEL(ItemLabels[inventoryid]),"");
 }
 
 void DropItem(GameObject object){
@@ -171,6 +175,9 @@ void Attack(Direction dir){
 void UsePotion(){
     if(Inventory[3].quantity){
         Inventory[3].quantity--;
+        char text[100];
+        sprintf(text,"%d",Inventory[3].quantity);
+        gtk_label_set_text(GTK_LABEL(ItemLabels[3]),text);
         if(!Inventory[3].quantity){
             UpdateInventory(3,0);
         }
