@@ -2,8 +2,9 @@
 
 
 void UpdateInventory(int inventoryid,int itemid){
-    Square *position;
+    
     if(Game->Inventory[inventoryid].id != Game->GameOptions->AllItems[itemid].id){
+        Square *position;
         position = Game->Inventory[inventoryid].position;
         Game->Inventory[inventoryid] = Game->GameOptions->AllItems[itemid];
         Game->Inventory[inventoryid].position = position;
@@ -135,7 +136,6 @@ void CraftItem(int id){
 }
 
 void DropItem(GameObject object){
-    Square *position;
     int itemid;
     switch(object.id){
         case GRASS2OBJECT_ID:  
