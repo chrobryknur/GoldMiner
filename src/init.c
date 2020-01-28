@@ -32,7 +32,7 @@ void InitScreen(){
     0,PROGRESSBAR_WIDTH,LOWER_MENU_HEIGHT/2);
     gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(Game->GtkGameState->powerLeft),1);
 
-    Game->GtkGameState->hourLabel = gtk_label_new("HOUR");
+    Game->GtkGameState->hourLabel = gtk_label_new("Score: 0");
     gtk_widget_set_name(Game->GtkGameState->hourLabel, "hourLabel");
     gtk_grid_attach(GTK_GRID(PowerGrid),GTK_WIDGET(Game->GtkGameState->hourLabel),0,LOWER_MENU_HEIGHT/2,PROGRESSBAR_WIDTH,LOWER_MENU_HEIGHT/2);
 
@@ -187,6 +187,7 @@ void InitDynamic(){
     Game->topleft_x_absolute = MAP_SIZE_X/2 - COLS/2;
     Game->topleft_y_absolute = MAP_SIZE_Y/2 - ROWS/2;
     Game->Power = 100.0;
+    Game->Score = 0;
     Game->EquippedItem = NULL;
     InitMap();
     InitInventory();

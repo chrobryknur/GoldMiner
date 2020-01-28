@@ -117,6 +117,7 @@ typedef struct GameState{
     Square ***Board;
     Item *Inventory;
     Item *EquippedItem;
+    int Score;
     float Power;
     int topleft_x_absolute;
     int topleft_y_absolute;
