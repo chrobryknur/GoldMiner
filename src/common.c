@@ -1,11 +1,11 @@
 #include "common.h"
 
 void EquipItem(int index_in_inventory){
-    EquippedItem = &Inventory[index_in_inventory];
-        gtk_widget_set_name(GTK_WIDGET(ItemLabels[index_in_inventory]), "activeLabel");
+    Game->EquippedItem = &Game->Inventory[index_in_inventory];
+        gtk_widget_set_name(GTK_WIDGET(Game->GtkGameState->ItemLabels[index_in_inventory]), "activeLabel");
     for(int i=0;i<INVENTORY_SIZE;i++){
         if(i!=index_in_inventory)
-            gtk_widget_set_name(GTK_WIDGET(ItemLabels[i]), "unactiveLabel");
+            gtk_widget_set_name(GTK_WIDGET(Game->GtkGameState->ItemLabels[i]), "unactiveLabel");
     }
 }
 
@@ -37,24 +37,24 @@ void OnKeyPress(GtkWidget *widget, GdkEventKey *event){
         break;
 
     case '1':
-        if(Inventory[0].id!=8){
-            CraftItem(8); //craft axe
+        if(Game->Inventory[Game->GameOptions->AllItems[(int)AXEITEM_ID].position_in_inventory].id!=(int)AXEITEM_ID){
+            CraftItem((int)AXEITEM_ID);
         }
         else {
-            EquipItem(0);
+            EquipItem(Game->GameOptions->AllItems[(int)AXEITEM_ID].position_in_inventory);
         }
         break;
     case '2':
-        if(Inventory[1].id!=10){
-            CraftItem(10);
+        if(Game->Inventory[Game->GameOptions->AllItems[(int)PICKAXEITEM_ID].position_in_inventory].id!=(int)PICKAXEITEM_ID){
+            CraftItem((int)PICKAXEITEM_ID);
         }
-        else EquipItem(1);
+        else EquipItem(Game->GameOptions->AllItems[(int)PICKAXEITEM_ID].position_in_inventory);
         break;
     case '3':
-        if(Inventory[2].id!=13){
-            CraftItem(13);
+        if(Game->Inventory[Game->GameOptions->AllItems[(int)SHOVELITEM_ID].position_in_inventory].id!=(int)SHOVELITEM_ID){
+            CraftItem((int)SHOVELITEM_ID);
         }
-        else EquipItem(2);
+        else EquipItem(Game->GameOptions->AllItems[(int)SHOVELITEM_ID].position_in_inventory);
         break;
     case '4':
         UsePotion();
@@ -62,12 +62,24 @@ void OnKeyPress(GtkWidget *widget, GdkEventKey *event){
     }
 }
 void CleanUp(){
-    free(AllItems);
     for(int i=0;i<COLS;i++){
-        free(Board[i]);
+        for(int j=0;j<ROWS;j++)
+            free(Game->Board[i][j]);
+        free(Game->Board[i]);
     }
-    free(Inventory);
-    free(Board);
+    free(Game->Board);
+    free(Game->GtkGameState->ItemLabels);
+    for(int i=0;i<MAP_SIZE_X;i++)
+        free(Game->GameOptions->Map[i]);
+    free(Game->GameOptions->Map);
+    for(int i=0;i<INVENTORY_SIZE;i++)
+        free(Game->Inventory[i].position);
+    free(Game->Inventory);
+    free(Game->GameOptions->Objects);
+    free(Game->GameOptions->AllItems);
+    free(Game->GameOptions);
+    free(Game->GtkGameState);
+    free(Game);
     gtk_main_quit();
     exit(1);
 }

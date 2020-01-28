@@ -1,0 +1,14 @@
+#define NO_ITEM_ID 0
+#define GRASSITEM_ID 1
+#define ROCKITEM_ID 2
+#define STICKITEM_ID 3
+#define WOODLOGITEM_ID 4
+#define GOLDITEM_ID 5
+#define DIRTITEM_ID 6
+#define POTIONITEM_ID 7
+#define NO_AXEITEM_ID 8
+#define AXEITEM_ID 9
+#define NO_PICKAXEITEM_ID 10
+#define PICKAXEITEM_ID 11
+#define SHOVELITEM_ID 12
+#define NO_SHOVELITEM_ID 13

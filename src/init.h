@@ -5,5 +5,4 @@
 
 
 void Init();
-void InitMap();
 

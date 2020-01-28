@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <math.h>
 
+
 #define ROWS 16
 #define COLS 32
 #define PNG_SIZE 32
@@ -14,17 +15,14 @@
 #define WINDOW_WIDTH  COLS*PNG_SIZE
 #define MAP_SIZE_X 512
 #define MAP_SIZE_Y 512
-#define GAME_OBJECTS 12
+#define GAME_OBJECTS_NUM 12
 #define PLAYER_X_RELATIVE COLS/2-1
 #define PLAYER_Y_RELATIVE ROWS/2-1
-#define PLAYER_X_ABSOLUTE PLAYER_X_RELATIVE + topleft_x_absolute
-#define PLAYER_Y_ABSOLUTE PLAYER_Y_RELATIVE + topleft_y_absolute
+#define PLAYER_X_ABSOLUTE PLAYER_X_RELATIVE + Game->topleft_x_absolute
+#define PLAYER_Y_ABSOLUTE PLAYER_Y_RELATIVE + Game->topleft_y_absolute
 #define INVENTORY_SIZE 10
 #define ALL_ITEMS_NUM 14
-
-int topleft_x_absolute;
-int topleft_y_absolute;
-
+ 
 typedef struct GameObject{
     char *name;
     char *path;
@@ -48,6 +46,38 @@ typedef enum Direction{
     DOWN=3
 }Direction;
 
+typedef enum ItemIDs{
+    NO_ITEM_ID = 0,
+    GRASSITEM_ID = 1,
+    ROCKITEM_ID = 2,
+    STICKITEM_ID = 3,
+    WOODLOGITEM_ID = 4,
+    GOLDITEM_ID = 5,
+    DIRTITEM_ID = 6,
+    POTIONITEM_ID = 7,
+    AXEITEM_ID = 8,
+    NO_AXEITEM_ID = 9,
+    PICKAXEITEM_ID = 10,
+    NO_PICKAXEITEM_ID = 11,
+    NO_SHOVELITEM_ID = 12,
+    SHOVELITEM_ID = 13
+}ItemIds;
+
+typedef enum GameObjectIDs{
+    PLAYEROBJECT_ID = 0,
+    GRASS1OBJECT_ID = 1,
+    TREEOBJECT_ID = 2,
+    LAKEOBJECT_ID = 3,
+    GRASS2OBJECT_ID = 4,
+    ROCKOBJECT_ID = 5,
+    WAVEOBJECT_ID = 6,
+    STONEOFPOWEROBJECT_ID = 7,
+    SMALLROCKOBJECT_ID = 8,
+    STICKOBJECT_ID = 9,
+    GOLDOREOBJECT_ID = 10,
+    SOILOBJECT_ID = 11
+}GameObjectIDs;
+
 typedef struct Square{
     GtkWidget *image;
     gint left;
@@ -62,28 +92,43 @@ typedef struct Item{
     char *path;
     int id;
     int quantity;
+    int position_in_inventory;
     bool wearable;
     GtkWidget *label;
 }Item;
 
-MapSquare Map[MAP_SIZE_X][MAP_SIZE_Y];
-GameObject Objects[GAME_OBJECTS];
-Square ***Board;
-Item *Inventory;
-Item *EquippedItem;
-Item *AllItems;
-float Power;
-GtkWidget *window;
-GtkWidget *powerLeft;
-GtkWidget *hourLabel;
-GtkCssProvider *cssProvider;
-GtkWidget* InventoryGrid;
-GtkWidget** ItemLabels;
+typedef struct GtkState{
+    GtkWidget *window;
+    GtkWidget *powerLeft;
+    GtkWidget *hourLabel;
+    GtkCssProvider *cssProvider;
+    GtkWidget *InventoryGrid;
+    GtkWidget **ItemLabels;
+    GtkWidget *Grid;
+}GtkState;
+
+typedef struct GameStaticOptions{
+    MapSquare **Map;
+    GameObject *Objects;
+    Item *AllItems;
+}GameStaticOptions;
+
+typedef struct GameState{
+    Square ***Board;
+    Item *Inventory;
+    Item *EquippedItem;
+    float Power;
+    int topleft_x_absolute;
+    int topleft_y_absolute;
+    GameStaticOptions *GameOptions;
+    GtkState *GtkGameState;
+}GameState;
+
+GameState *Game;
 
 void OnKeyPress(GtkWidget *widget, GdkEventKey *event);
+void UpdateScreen(enum Direction dir);
 void Attack(Direction dir);
-void UpdateInventory(int inventoryid, int itemid);
-void UpdateScreen(Direction dir);
 void UsePotion();
 void CraftItem(int id);
 int UpdatePower();
