@@ -64,16 +64,16 @@ void InitScreen(){
 
 GameObject RandomObject(){
     int x = g_random_int()%400;
-    if(x<2) return Game->GameOptions->Objects[3];
-    if(x<5) return Game->GameOptions->Objects[2];
-    if(x<10) return Game->GameOptions->Objects[4];
-    if(x<15) return Game->GameOptions->Objects[5];
-    if(x<17) return Game->GameOptions->Objects[7];
-    if(x<18) return Game->GameOptions->Objects[8];
-    if(x<19) return Game->GameOptions->Objects[9];
-    if(x<20) return Game->GameOptions->Objects[10];
-    if(x<21) return Game->GameOptions->Objects[11];
-    return Game->GameOptions->Objects[1];
+    if(x<2) return Game->GameOptions->Objects[LAKEOBJECT_ID];
+    if(x<5) return Game->GameOptions->Objects[TREEOBJECT_ID];
+    if(x<10) return Game->GameOptions->Objects[GRASS2OBJECT_ID];
+    if(x<15) return Game->GameOptions->Objects[ROCKOBJECT_ID];
+    if(x<17) return Game->GameOptions->Objects[STONEOFPOWEROBJECT_ID];
+    if(x<18) return Game->GameOptions->Objects[SMALLROCKOBJECT_ID];
+    if(x<19) return Game->GameOptions->Objects[STICKOBJECT_ID];
+    if(x<20) return Game->GameOptions->Objects[GOLDOREOBJECT_ID];
+    if(x<21) return Game->GameOptions->Objects[SOILOBJECT_ID];
+    return Game->GameOptions->Objects[GRASS1OBJECT_ID];
 }
 
 int DistFromCenter(int x, int y){
@@ -157,7 +157,7 @@ void InitGameObjects(){
 }
 
 void InitInventory(){
-    Game->EquippedItem = &Game->GameOptions->AllItems[0];
+    Game->EquippedItem = &Game->GameOptions->AllItems[NO_ITEM_ID];
     Game->Inventory = malloc(INVENTORY_SIZE*sizeof(Item));
     Game->Inventory[0]=Game->GameOptions->AllItems[NO_AXEITEM_ID];
     Game->Inventory[1]=Game->GameOptions->AllItems[NO_PICKAXEITEM_ID];
