@@ -2,7 +2,7 @@
 
 Chodzenie:
 WASD    
-Atak:  
+Atak:
 Strzałki  
 Craftowanie/zakładanie przedmiotów:  
 1 - topór (patyk, kamień, trawa)  
