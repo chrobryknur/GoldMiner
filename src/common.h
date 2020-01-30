@@ -134,4 +134,6 @@ void UsePotion();
 void CraftItem(int id);
 int UpdatePower();
 void CleanUp();
+void Reset();
+void Init();
 void Help();

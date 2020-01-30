@@ -61,12 +61,42 @@ void OnKeyPress(GtkWidget *widget, GdkEventKey *event){
         break;
     }
 }
+
+void Reset(){
+    for(int i=0;i<COLS;i++){
+        for(int j=0;j<ROWS;j++)
+            free(Game->Board[i][j]);
+        free(Game->Board[i]);
+    }
+    free(Game->Board);
+    free(Game->GtkGameState->ItemLabels);
+    for(int i=0;i<MAP_SIZE_X;i++)
+        free(Game->GameOptions->Map[i]);
+    free(Game->GameOptions->Map);
+    for(int i=0;i<INVENTORY_SIZE;i++)
+        free(Game->Inventory[i].position);
+    free(Game->Inventory);
+    free(Game->GameOptions->Objects);
+    free(Game->GameOptions->AllItems);
+    free(Game->GameOptions);
+    if(GTK_IS_BIN(Game->GtkGameState->window)) {
+        GtkWidget *child = gtk_bin_get_child(GTK_BIN(Game->GtkGameState->window));
+        gtk_widget_destroy(child);
+    }
+    gtk_widget_hide(Game->GtkGameState->window);
+    //gtk_widget_destroy(Game->GtkGameState->window);
+    free(Game->GtkGameState);
+    free(Game);
+    Init();
+}
+
 void CleanUp(){
     for(int i=0;i<COLS;i++){
         for(int j=0;j<ROWS;j++)
             free(Game->Board[i][j]);
         free(Game->Board[i]);
     }
+    //gtk_window_close(GTK_WINDOW(Game->GtkGameState->window));
     free(Game->Board);
     free(Game->GtkGameState->ItemLabels);
     for(int i=0;i<MAP_SIZE_X;i++)

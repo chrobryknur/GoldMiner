@@ -11,7 +11,7 @@ OBJ =\
 all: main
 
 clean:
-	rm -f Game
+	rm -f Game a.out
 
 .c.o:
 	$(CC) -c $(INCLUDES) $(CFLAGS) $<

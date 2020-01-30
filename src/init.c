@@ -10,6 +10,21 @@ void InitBoardSquare(int x, int y){
     Game->Board[x][y]->width = WINDOW_WIDTH/COLS;
 }
 
+GtkWidget* InitButtonsGrid(){
+    GtkWidget* buttonsGrid = gtk_grid_new();
+    GtkWidget* Buttons[3];
+    Buttons[0] = gtk_button_new_with_label("Help");
+    Buttons[1] = gtk_button_new_with_label("Reset");
+    Buttons[2] = gtk_button_new_with_label("Exit");    
+    g_signal_connect (G_OBJECT (Buttons[0]), "clicked", G_CALLBACK (Help), NULL);
+    g_signal_connect (G_OBJECT (Buttons[1]), "clicked", G_CALLBACK (Reset),NULL);
+    g_signal_connect (G_OBJECT (Buttons[2]), "clicked", G_CALLBACK (CleanUp), NULL);
+    for(int i=0;i<3;i++){
+        gtk_grid_attach(GTK_GRID(buttonsGrid),GTK_WIDGET(Buttons[i]),i*96,0,96,LOWER_MENU_HEIGHT);
+    }
+    return buttonsGrid; 
+}
+
 void InitScreen(){
     Game->GtkGameState->Grid= gtk_grid_new();
     GtkWidget* BoardGrid = gtk_grid_new();
@@ -49,17 +64,8 @@ void InitScreen(){
         gtk_grid_attach(GTK_GRID(Game->GtkGameState->InventoryGrid),GTK_WIDGET(Game->GtkGameState->ItemLabels[i]),Game->Inventory[i].position->left,Game->Inventory[i].position->top+48,48,24);
     }
 
-    GtkWidget* buttonsGrid = gtk_grid_new();
-    GtkWidget* Buttons[3];
-    Buttons[0] = gtk_button_new_with_label("Help");
-    Buttons[1] = gtk_button_new_with_label("Reset");
-    Buttons[2] = gtk_button_new_with_label("Exit");    
-    g_signal_connect (G_OBJECT (Buttons[0]), "clicked", G_CALLBACK (Help), NULL);
-    g_signal_connect (G_OBJECT (Buttons[2]), "clicked", G_CALLBACK (CleanUp), NULL);
-    gtk_grid_attach(GTK_GRID(Game->GtkGameState->Grid),GTK_WIDGET(buttonsGrid),PROGRESSBAR_WIDTH+INVENTORY_WIDTH,WINDOW_HEIGHT,WINDOW_WIDTH-PROGRESSBAR_WIDTH-INVENTORY_WIDTH,LOWER_MENU_HEIGHT);
-    for(int i=0;i<3;i++){
-        gtk_grid_attach(GTK_GRID(buttonsGrid),GTK_WIDGET(Buttons[i]),i*96,0,96,LOWER_MENU_HEIGHT);
-    }
+    gtk_grid_attach(GTK_GRID(Game->GtkGameState->Grid),GTK_WIDGET(InitButtonsGrid()),PROGRESSBAR_WIDTH+INVENTORY_WIDTH,WINDOW_HEIGHT,WINDOW_WIDTH-PROGRESSBAR_WIDTH-INVENTORY_WIDTH,LOWER_MENU_HEIGHT);
+    
 }
 
 GameObject RandomObject(){
@@ -202,6 +208,7 @@ void InitGtk(){
     gtk_window_set_default_size(GTK_WINDOW(Game->GtkGameState->window),WINDOW_WIDTH,WINDOW_HEIGHT);
     gtk_window_set_resizable(GTK_WINDOW(Game->GtkGameState->window),FALSE);
     gtk_window_set_title(GTK_WINDOW(Game->GtkGameState->window),"Game");
+    gtk_window_set_icon_from_file(GTK_WINDOW(Game->GtkGameState->window),"./Images/player.png",NULL);
     InitScreen();
     gtk_container_add(GTK_CONTAINER(Game->GtkGameState->window),GTK_WIDGET(Game->GtkGameState->Grid));
     g_signal_connect (G_OBJECT (Game->GtkGameState->window), "key_press_event", G_CALLBACK (OnKeyPress), NULL);

@@ -3,6 +3,3 @@
 #define LOWER_MENU_HEIGHT 64
 #define INVENTORY_WIDTH 480
 
-
-void Init();
-
