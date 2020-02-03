@@ -102,7 +102,7 @@ typedef struct GtkState{
     GtkWidget *window;
     GtkWidget *scoreWindow;
     GtkWidget *powerLeft;
-    GtkWidget *scoreLabel;
+    GtkWidget *communicateLabel;
     GtkCssProvider *cssProvider;
     GtkWidget *InventoryGrid;
     GtkWidget **ItemLabels;

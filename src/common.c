@@ -68,16 +68,17 @@ void EndGame(){
         return;
     }
     Game->GtkGameState->scoreWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(Game->GtkGameState->scoreWindow),"You lost!");
-    gtk_window_set_default_size(GTK_WINDOW(Game->GtkGameState->scoreWindow),150,50);
+    gtk_window_set_title(GTK_WINDOW(Game->GtkGameState->scoreWindow),"You lost all of your power!");
+    gtk_window_set_default_size(GTK_WINDOW(Game->GtkGameState->scoreWindow),150,30);
     gtk_window_set_resizable(GTK_WINDOW(Game->GtkGameState->scoreWindow),FALSE);
     GtkWidget*  grid = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(Game->GtkGameState->scoreWindow),GTK_WIDGET(grid));
-    char str[15];
+    char str[30];
     char scoreNumToString[5];
     sprintf(scoreNumToString,"%d",Game->Score);
-    strcpy(str,"You scored: ");
+    strcpy(str,"You have collected ");
     strcat(str,scoreNumToString);
+    strcat(str," gold.");
     GtkWidget* scoreLabel = gtk_label_new(str);
     GtkWidget* resetButton = gtk_button_new_with_label("Reset");
     GtkWidget* quitButton = gtk_button_new_with_label("Exit");
@@ -86,6 +87,7 @@ void EndGame(){
     gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(scoreLabel),0,10,200,50);
     gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(resetButton),0,100,100,50);
     gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(quitButton),100,100,100,50);
+    gtk_widget_set_name(Game->GtkGameState->scoreWindow, "scoreWindow");
     gtk_widget_show_all(Game->GtkGameState->scoreWindow);
 }
 
@@ -144,6 +146,10 @@ void CleanUp(){
 void Help(){
     GtkWidget *helpWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(helpWindow),"Help");
-    //gtk_window_set_resizable(GTK_WINDOW(helpWindow),FALSE);
-    gtk_widget_show(helpWindow);
+    gtk_window_set_resizable(GTK_WINDOW(helpWindow),FALSE);
+    gtk_widget_set_name(helpWindow,"helpWindow");
+    char *str = "Walking: WASD\nAttack: Arrowkeys\nCrafting/equipping items:\n1 - Axe (stick, stone, grass)\n2 - Pickaxe (wood log, stone, grass)\n3 - Shovel (stick, wood log, stone)\n\nYour goal is to collect as much gold  as possible.\nIn order to do that you have to use the implemented crafting system.\nSome objects may not be vulnerable to the currently equipped item.\n\nKeep an eye on the Power Bar!\nIf it drops to zero the game will end.\nTo refill the power you need to find a Stone of Power\nand drink potion that drops from it.\n\nEverytime you attack an object you lose a small amount of power.\nKeep in mind that some objects are hardy,\nso you have to hit them multiple times.";
+    GtkWidget *helpLabel = gtk_label_new(str);
+    gtk_container_add(GTK_CONTAINER(helpWindow),GTK_WIDGET(helpLabel));
+    gtk_widget_show_all(helpWindow);
 }

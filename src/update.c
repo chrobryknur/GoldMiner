@@ -76,6 +76,20 @@ void UpdateScreen(enum Direction dir){
     UpdateBoard();
 }
 
+int ClearLabel(){
+    gtk_label_set_text(GTK_LABEL(Game->GtkGameState->communicateLabel)," ");
+    return 0;
+}
+
+void ChangeCommunicationLabel(char *str, bool positive){
+    gtk_label_set_text(GTK_LABEL(Game->GtkGameState->communicateLabel),str);
+    if(positive)
+        gtk_widget_set_name(Game->GtkGameState->communicateLabel, "greenLabel");
+    else gtk_widget_set_name(Game->GtkGameState->communicateLabel, "redLabel");
+    g_timeout_add(3000,ClearLabel,NULL);    
+
+}
+
 
 int UpdatePower(){
     if(Game->Power>0){
@@ -111,6 +125,7 @@ void Craft(int item1,int item2, int item3, int wheretoput, int whattoput){
         }
         else Game->Inventory[item3pos].quantity--;
         UpdateInventory(wheretoput,whattoput);
+        ChangeCommunicationLabel("Nice!",true);
     }
 }
 
@@ -159,12 +174,6 @@ void DropItem(GameObject object){
         case GOLDOREOBJECT_ID:
             itemid = GOLDITEM_ID;
             Game->Score+=1;
-            char str[15];
-            char scoreNumToString[5];
-            sprintf(scoreNumToString,"%d",Game->Score);
-            strcpy(str,"Score: ");
-            strcat(str,scoreNumToString);
-            gtk_label_set_text(GTK_LABEL(Game->GtkGameState->scoreLabel),str);
             break;
         case SOILOBJECT_ID:
             itemid = DIRTITEM_ID;
@@ -178,13 +187,20 @@ void InteractWithObject(MapSquare *pointer){
     (pointer->object.vulnerableToID == Game->EquippedItem->id ||
     !pointer->object.vulnerableToID)){
         pointer->object.healthPoints--;
+        char str[30];
+        char scoreNumToString[5];
+        sprintf(scoreNumToString,"%d",pointer->object.healthPoints);
+        strcpy(str,"HP left: ");
+        strcat(str,scoreNumToString);
+        ChangeCommunicationLabel(str,false);
         if(!pointer->object.healthPoints){
+            ChangeCommunicationLabel("Oh, there is something!",true);
             DropItem(pointer->object);
             pointer->object = Game->GameOptions->Objects[GRASS1OBJECT_ID];
             pointer->current = Game->GameOptions->Objects[GRASS1OBJECT_ID];
         }
     }
-
+    else if(pointer->object.id!=GRASS1OBJECT_ID)ChangeCommunicationLabel("I can't hit it",false);
 }
 
 void Attack(Direction dir){
@@ -221,6 +237,7 @@ void UsePotion(){
         if(Game->Power+10<=100.0)
             Game->Power+=10;
         else Game->Power = 100.0;
+        ChangeCommunicationLabel("I feel much better now!",true);
         UpdatePower();
     }
 }

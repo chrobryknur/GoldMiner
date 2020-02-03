@@ -1,5 +1,5 @@
 window{
-    background-color: rgb(0, 0, 0);
+    background-color:rgb(0,0,0);
     color:rgb(185, 185, 185);
     font-size:12px;
 }
@@ -31,10 +31,25 @@ button label{
    border-style: none;
 }
 
-#scoreLabel{
-    margin-top:12px;
-    padding-top:9px;
-    padding-bottom: 9px;
+#scoreWindow{
+    padding:10px 10px 10px 10px;
+    font-size:16px;
+    background-color: rgb(66, 66, 66);
+}
+
+#helpWindow{
+    font-size:16px;
+    background-color: rgb(66, 66, 66);
+}
+
+#helpWindow label{
+    margin:10px 10px 10px 10px;
+}
+
+#scoreWindow button{
+    margin-top: 10px;
+    min-width: 98px;
+    min-height: 20px;
 }
 
 #boardGrid{
@@ -43,6 +58,15 @@ button label{
 #unactiveLabel{
     color:rgb(185, 185, 185);
 }
-#activeLabel{
+#greenLabel{
+    margin-top:12px;
+    padding-top:9px;
+    padding-bottom: 9px;
+    color:rgb(2, 163, 2);
+}
+#redLabel{
+    margin-top:12px;
+    padding-top:9px;
+    padding-bottom: 9px;
     color:red;
 }

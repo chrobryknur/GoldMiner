@@ -47,9 +47,9 @@ void InitScreen(){
     0,PROGRESSBAR_WIDTH,LOWER_MENU_HEIGHT/2);
     gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(Game->GtkGameState->powerLeft),1);
 
-    Game->GtkGameState->scoreLabel = gtk_label_new("Score: 0");
-    gtk_widget_set_name(Game->GtkGameState->scoreLabel, "scoreLabel");
-    gtk_grid_attach(GTK_GRID(PowerGrid),GTK_WIDGET(Game->GtkGameState->scoreLabel),0,LOWER_MENU_HEIGHT/2,PROGRESSBAR_WIDTH,LOWER_MENU_HEIGHT/2);
+    Game->GtkGameState->communicateLabel = gtk_label_new(" ");
+    gtk_widget_set_name(Game->GtkGameState->communicateLabel, "communicateLabel");
+    gtk_grid_attach(GTK_GRID(PowerGrid),GTK_WIDGET(Game->GtkGameState->communicateLabel),0,LOWER_MENU_HEIGHT/2,PROGRESSBAR_WIDTH,LOWER_MENU_HEIGHT/2);
 
 
     Game->GtkGameState->InventoryGrid = gtk_grid_new();
@@ -114,20 +114,20 @@ Item CreateItem(char *name, char *path, int id, int quantity, bool wearable,int 
 }
 
 void InitItems(){
-    Game->GameOptions->AllItems[0] = CreateItem("Empty","./Images/noitem.png",NO_ITEM_ID,0,false,0);
-    Game->GameOptions->AllItems[1] = CreateItem("Grass","./Images/grassitem.png",GRASSITEM_ID,1,false,9);
-    Game->GameOptions->AllItems[2] = CreateItem("Rocks","./Images/smallrockitem.png",ROCKITEM_ID,1,false,8);
-    Game->GameOptions->AllItems[3] = CreateItem("Stick","./Images/stickitem.png",STICKITEM_ID,1,false,7);
-    Game->GameOptions->AllItems[4] = CreateItem("Wood Log","./Images/woodlog.png",WOODLOGITEM_ID,1,false,6);
-    Game->GameOptions->AllItems[5] = CreateItem("Gold Nugget","./Images/goldnugget.png",GOLDITEM_ID,1,false,4);
-    Game->GameOptions->AllItems[6] = CreateItem("Dirt","./Images/dirt.png",DIRTITEM_ID,1,false,5);
-    Game->GameOptions->AllItems[7] = CreateItem("Potion","./Images/potion.png",POTIONITEM_ID,1,false,3);
-    Game->GameOptions->AllItems[8] = CreateItem("Axe","./Images/axe.png",AXEITEM_ID,1,true,0);
-    Game->GameOptions->AllItems[9] = CreateItem("Axe","./Images/axeempty.png",NO_AXEITEM_ID,0,false,0);
-    Game->GameOptions->AllItems[10] = CreateItem("Pickaxe","./Images/pickaxe.png",PICKAXEITEM_ID,1,true,1);
-    Game->GameOptions->AllItems[11] = CreateItem("Pickaxe","./Images/pickaxeempty.png",NO_PICKAXEITEM_ID,1,false,1);
-    Game->GameOptions->AllItems[12] = CreateItem("Shovel","./Images/shovelempty.png",NO_SHOVELITEM_ID,1,false,2);
-    Game->GameOptions->AllItems[13] = CreateItem("Shovel","./Images/shovel.png",SHOVELITEM_ID,1,true,2);
+    Game->GameOptions->AllItems[NO_ITEM_ID] = CreateItem("Empty","./Images/noitem.png",NO_ITEM_ID,0,false,0);
+    Game->GameOptions->AllItems[GRASSITEM_ID] = CreateItem("Grass","./Images/grassitem.png",GRASSITEM_ID,1,false,9);
+    Game->GameOptions->AllItems[ROCKITEM_ID] = CreateItem("Rocks","./Images/smallrockitem.png",ROCKITEM_ID,1,false,8);
+    Game->GameOptions->AllItems[STICKITEM_ID] = CreateItem("Stick","./Images/stickitem.png",STICKITEM_ID,1,false,7);
+    Game->GameOptions->AllItems[WOODLOGITEM_ID] = CreateItem("Wood Log","./Images/woodlog.png",WOODLOGITEM_ID,1,false,6);
+    Game->GameOptions->AllItems[GOLDITEM_ID] = CreateItem("Gold Nugget","./Images/goldnugget.png",GOLDITEM_ID,1,false,4);
+    Game->GameOptions->AllItems[DIRTITEM_ID] = CreateItem("Dirt","./Images/dirt.png",DIRTITEM_ID,1,false,5);
+    Game->GameOptions->AllItems[POTIONITEM_ID] = CreateItem("Potion","./Images/potion.png",POTIONITEM_ID,1,false,3);
+    Game->GameOptions->AllItems[AXEITEM_ID] = CreateItem("Axe","./Images/axe.png",AXEITEM_ID,1,true,0);
+    Game->GameOptions->AllItems[NO_AXEITEM_ID] = CreateItem("Axe","./Images/axeempty.png",NO_AXEITEM_ID,0,false,0);
+    Game->GameOptions->AllItems[PICKAXEITEM_ID] = CreateItem("Pickaxe","./Images/pickaxe.png",PICKAXEITEM_ID,1,true,1);
+    Game->GameOptions->AllItems[NO_PICKAXEITEM_ID] = CreateItem("Pickaxe","./Images/pickaxeempty.png",NO_PICKAXEITEM_ID,1,false,1);
+    Game->GameOptions->AllItems[NO_SHOVELITEM_ID] = CreateItem("Shovel","./Images/shovelempty.png",NO_SHOVELITEM_ID,1,false,2);
+    Game->GameOptions->AllItems[SHOVELITEM_ID] = CreateItem("Shovel","./Images/shovel.png",SHOVELITEM_ID,1,true,2);
     
 }
 
@@ -160,7 +160,7 @@ void InitGameObjects(){
     Game->GameOptions->Objects[GRASS2OBJECT_ID] = CreateObject("GRASS2","./Images/grass2.png",GRASS2OBJECT_ID,false,true,false,(int)NO_ITEM_ID,3,0.012);
     Game->GameOptions->Objects[SMALLROCKOBJECT_ID] = CreateObject("SMALL ROCK","./Images/smallrock.png",SMALLROCKOBJECT_ID,false,true,false,(int)NO_ITEM_ID,1,0.012);
     Game->GameOptions->Objects[STICKOBJECT_ID] = CreateObject("STICK","./Images/stick.png",STICKOBJECT_ID,false,true,false,(int)NO_ITEM_ID,1,0.012);
-    Game->GameOptions->Objects[GRASS1OBJECT_ID] = CreateObject("GRASS","./Images/grasscp.png",GRASS1OBJECT_ID,true,true,false,(int)NO_ITEM_ID,0,0.85);
+    Game->GameOptions->Objects[GRASS1OBJECT_ID] = CreateObject("GRASS","./Images/grasscp.png",GRASS1OBJECT_ID,true,false,false,(int)NO_ITEM_ID,0,0.85);
 }
 
 void InitInventory(){
