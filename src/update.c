@@ -80,10 +80,10 @@ void UpdateScreen(enum Direction dir){
 int UpdatePower(){
     if(Game->Power>0){
         gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(Game->GtkGameState->powerLeft),Game->Power/100);
-        Game->Power -=10;
+        Game->Power -=0.5;
         return 1;
     }
-    else EndGame();
+    EndGame();
     return 0;
 }
 

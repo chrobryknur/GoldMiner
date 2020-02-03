@@ -63,6 +63,10 @@ void OnKeyPress(GtkWidget *widget, GdkEventKey *event){
 }
 
 void EndGame(){
+    if(Game->Power>0){
+        Game->Power=-1;
+        return;
+    }
     Game->GtkGameState->scoreWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(Game->GtkGameState->scoreWindow),"You lost!");
     gtk_window_set_default_size(GTK_WINDOW(Game->GtkGameState->scoreWindow),150,50);

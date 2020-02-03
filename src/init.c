@@ -17,7 +17,7 @@ GtkWidget* InitButtonsGrid(){
     Buttons[1] = gtk_button_new_with_label("Reset");
     Buttons[2] = gtk_button_new_with_label("Exit");    
     g_signal_connect (G_OBJECT (Buttons[0]), "clicked", G_CALLBACK (Help), NULL);
-    g_signal_connect (G_OBJECT (Buttons[1]), "clicked", G_CALLBACK (Reset),NULL);
+    g_signal_connect (G_OBJECT (Buttons[1]), "clicked", G_CALLBACK (EndGame),NULL);
     g_signal_connect (G_OBJECT (Buttons[2]), "clicked", G_CALLBACK (CleanUp), NULL);
     for(int i=0;i<3;i++){
         gtk_grid_attach(GTK_GRID(buttonsGrid),GTK_WIDGET(Buttons[i]),i*96,0,96,LOWER_MENU_HEIGHT);
