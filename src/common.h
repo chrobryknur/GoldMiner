@@ -32,6 +32,7 @@ typedef struct GameObject{
     bool isPlayer;
     int healthPoints;
     int vulnerableToID;
+    double probabilityOfSpawning;
 }GameObject;
 
 typedef struct MapSquare{
@@ -65,17 +66,17 @@ typedef enum ItemIDs{
 
 typedef enum GameObjectIDs{
     PLAYEROBJECT_ID = 0,
-    GRASS1OBJECT_ID = 1,
-    TREEOBJECT_ID = 2,
-    LAKEOBJECT_ID = 3,
-    GRASS2OBJECT_ID = 4,
+    WAVEOBJECT_ID = 1,
+    GOLDOREOBJECT_ID = 2,
+    STONEOFPOWEROBJECT_ID = 3,
+    SOILOBJECT_ID = 4,
     ROCKOBJECT_ID = 5,
-    WAVEOBJECT_ID = 6,
-    STONEOFPOWEROBJECT_ID = 7,
-    SMALLROCKOBJECT_ID = 8,
-    STICKOBJECT_ID = 9,
-    GOLDOREOBJECT_ID = 10,
-    SOILOBJECT_ID = 11
+    TREEOBJECT_ID = 6,
+    LAKEOBJECT_ID = 7,
+    GRASS2OBJECT_ID = 8,
+    SMALLROCKOBJECT_ID = 9,
+    STICKOBJECT_ID = 10,
+    GRASS1OBJECT_ID = 11
 }GameObjectIDs;
 
 typedef struct Square{
@@ -99,8 +100,9 @@ typedef struct Item{
 
 typedef struct GtkState{
     GtkWidget *window;
+    GtkWidget *scoreWindow;
     GtkWidget *powerLeft;
-    GtkWidget *hourLabel;
+    GtkWidget *scoreLabel;
     GtkCssProvider *cssProvider;
     GtkWidget *InventoryGrid;
     GtkWidget **ItemLabels;
@@ -137,3 +139,4 @@ void CleanUp();
 void Reset();
 void Init();
 void Help();
+void EndGame();

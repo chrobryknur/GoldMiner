@@ -6,7 +6,7 @@ OBJ =\
 	./src/main.c \
 	./src/init.c \
 	./src/common.c \
-	./src/draw.c \
+	./src/update.c \
 
 all: main
 

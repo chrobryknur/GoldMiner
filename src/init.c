@@ -47,9 +47,9 @@ void InitScreen(){
     0,PROGRESSBAR_WIDTH,LOWER_MENU_HEIGHT/2);
     gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(Game->GtkGameState->powerLeft),1);
 
-    Game->GtkGameState->hourLabel = gtk_label_new("Score: 0");
-    gtk_widget_set_name(Game->GtkGameState->hourLabel, "hourLabel");
-    gtk_grid_attach(GTK_GRID(PowerGrid),GTK_WIDGET(Game->GtkGameState->hourLabel),0,LOWER_MENU_HEIGHT/2,PROGRESSBAR_WIDTH,LOWER_MENU_HEIGHT/2);
+    Game->GtkGameState->scoreLabel = gtk_label_new("Score: 0");
+    gtk_widget_set_name(Game->GtkGameState->scoreLabel, "scoreLabel");
+    gtk_grid_attach(GTK_GRID(PowerGrid),GTK_WIDGET(Game->GtkGameState->scoreLabel),0,LOWER_MENU_HEIGHT/2,PROGRESSBAR_WIDTH,LOWER_MENU_HEIGHT/2);
 
 
     Game->GtkGameState->InventoryGrid = gtk_grid_new();
@@ -69,16 +69,13 @@ void InitScreen(){
 }
 
 GameObject RandomObject(){
-    int x = g_random_int()%400;
-    if(x<2) return Game->GameOptions->Objects[LAKEOBJECT_ID];
-    if(x<5) return Game->GameOptions->Objects[TREEOBJECT_ID];
-    if(x<10) return Game->GameOptions->Objects[GRASS2OBJECT_ID];
-    if(x<15) return Game->GameOptions->Objects[ROCKOBJECT_ID];
-    if(x<17) return Game->GameOptions->Objects[STONEOFPOWEROBJECT_ID];
-    if(x<18) return Game->GameOptions->Objects[SMALLROCKOBJECT_ID];
-    if(x<19) return Game->GameOptions->Objects[STICKOBJECT_ID];
-    if(x<20) return Game->GameOptions->Objects[GOLDOREOBJECT_ID];
-    if(x<21) return Game->GameOptions->Objects[SOILOBJECT_ID];
+    double randomNumber = ((double)(g_random_int()%1000))/1000;
+    double cumulativeProbability = 0.0;
+    for(int i=0;i<GAME_OBJECTS_NUM;i++){
+        cumulativeProbability+=Game->GameOptions->Objects[i].probabilityOfSpawning;
+        if(randomNumber<cumulativeProbability)
+            return Game->GameOptions->Objects[i];
+    }
     return Game->GameOptions->Objects[GRASS1OBJECT_ID];
 }
 
@@ -134,7 +131,10 @@ void InitItems(){
     
 }
 
-GameObject CreateObject(char *name, char *path,int id, bool canPlayerEnter, bool isInteractive, bool isPlayer, int vulnerableToID,int healthPoints){
+GameObject CreateObject(char *name, char *path,int id,
+ bool canPlayerEnter,bool isInteractive, bool isPlayer,
+ int vulnerableToID,int healthPoints, double probability){
+
     GameObject a;
     a.name = name;
     a.id = id;
@@ -144,22 +144,23 @@ GameObject CreateObject(char *name, char *path,int id, bool canPlayerEnter, bool
     a.isPlayer = isPlayer;
     a.vulnerableToID = vulnerableToID;
     a.healthPoints = healthPoints;
+    a.probabilityOfSpawning = probability;
     return a;
 }
 
 void InitGameObjects(){
-    Game->GameOptions->Objects[0] = CreateObject("PLAYER","./Images/player.png",(int)PLAYEROBJECT_ID,true,true,true,(int)NO_ITEM_ID,0);
-    Game->GameOptions->Objects[1] = CreateObject("GRASS","./Images/grasscp.png",(int)GRASS1OBJECT_ID,true,true,false,(int)NO_ITEM_ID,0);
-    Game->GameOptions->Objects[2] = CreateObject("TREE","./Images/tree.png",(int)TREEOBJECT_ID,false,true,false,(int)AXEITEM_ID,10);
-    Game->GameOptions->Objects[3] = CreateObject("LAKE","./Images/lake.png",(int)LAKEOBJECT_ID,false,false,false,(int)NO_ITEM_ID,0);
-    Game->GameOptions->Objects[4] = CreateObject("GRASS2","./Images/grass2.png",(int)GRASS2OBJECT_ID,false,true,false,(int)NO_ITEM_ID,3);
-    Game->GameOptions->Objects[5] = CreateObject("ROCK","./Images/rock.png",(int)ROCKOBJECT_ID,false,true,false,(int)PICKAXEITEM_ID,10);
-    Game->GameOptions->Objects[6] = CreateObject("WAVE","./Images/wave.png",(int)WAVEOBJECT_ID,false,false,false,(int)NO_ITEM_ID,0);
-    Game->GameOptions->Objects[7] = CreateObject("STONE OF POWER","./Images/stone.png",(int)STONEOFPOWEROBJECT_ID,false,true,false,(int)NO_ITEM_ID,1);
-    Game->GameOptions->Objects[8] = CreateObject("SMALL ROCK","./Images/smallrock.png",(int)SMALLROCKOBJECT_ID,false,true,false,(int)NO_ITEM_ID,1);
-    Game->GameOptions->Objects[9] = CreateObject("STICK","./Images/stick.png",(int)STICKOBJECT_ID,false,true,false,(int)NO_ITEM_ID,1);
-    Game->GameOptions->Objects[10] = CreateObject("GOLD ORE","./Images/goldore.png",(int)GOLDOREOBJECT_ID,false,true,false,(int)PICKAXEITEM_ID,20);
-    Game->GameOptions->Objects[11] = CreateObject("SOIL","./Images/soil.png",(int)SOILOBJECT_ID,false,true,false,(int)SHOVELITEM_ID,5);
+    Game->GameOptions->Objects[PLAYEROBJECT_ID] = CreateObject("PLAYER","./Images/player.png",PLAYEROBJECT_ID,true,true,true,(int)NO_ITEM_ID,0,0.0);
+    Game->GameOptions->Objects[WAVEOBJECT_ID] = CreateObject("WAVE","./Images/wave.png",WAVEOBJECT_ID,false,false,false,(int)NO_ITEM_ID,0,0.0);
+    Game->GameOptions->Objects[GOLDOREOBJECT_ID] = CreateObject("GOLD ORE","./Images/goldore.png",GOLDOREOBJECT_ID,false,true,false,(int)PICKAXEITEM_ID,20,0.001);
+    Game->GameOptions->Objects[STONEOFPOWEROBJECT_ID] = CreateObject("STONE OF POWER","./Images/stone.png",STONEOFPOWEROBJECT_ID,false,true,false,(int)NO_ITEM_ID,1,0.001);
+    Game->GameOptions->Objects[SOILOBJECT_ID] = CreateObject("SOIL","./Images/soil.png",SOILOBJECT_ID,false,true,false,(int)SHOVELITEM_ID,5,0.005);
+    Game->GameOptions->Objects[ROCKOBJECT_ID] = CreateObject("ROCK","./Images/rock.png",ROCKOBJECT_ID,false,true,false,(int)PICKAXEITEM_ID,10,0.005);
+    Game->GameOptions->Objects[TREEOBJECT_ID] = CreateObject("TREE","./Images/tree.png",TREEOBJECT_ID,false,true,false,(int)AXEITEM_ID,10,0.01);
+    Game->GameOptions->Objects[LAKEOBJECT_ID] = CreateObject("LAKE","./Images/lake.png",LAKEOBJECT_ID,false,false,false,(int)NO_ITEM_ID,0,0.01);
+    Game->GameOptions->Objects[GRASS2OBJECT_ID] = CreateObject("GRASS2","./Images/grass2.png",GRASS2OBJECT_ID,false,true,false,(int)NO_ITEM_ID,3,0.012);
+    Game->GameOptions->Objects[SMALLROCKOBJECT_ID] = CreateObject("SMALL ROCK","./Images/smallrock.png",SMALLROCKOBJECT_ID,false,true,false,(int)NO_ITEM_ID,1,0.012);
+    Game->GameOptions->Objects[STICKOBJECT_ID] = CreateObject("STICK","./Images/stick.png",STICKOBJECT_ID,false,true,false,(int)NO_ITEM_ID,1,0.012);
+    Game->GameOptions->Objects[GRASS1OBJECT_ID] = CreateObject("GRASS","./Images/grasscp.png",GRASS1OBJECT_ID,true,true,false,(int)NO_ITEM_ID,0,0.85);
 }
 
 void InitInventory(){
@@ -204,6 +205,7 @@ void InitGtk(){
     Game->GtkGameState = malloc(sizeof(GtkState));
     Game->GtkGameState->window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     Game->GtkGameState->cssProvider = gtk_css_provider_new();
+    Game->GtkGameState->scoreWindow = NULL;
     gtk_style_context_add_provider_for_screen(gdk_screen_get_default(), GTK_STYLE_PROVIDER(Game->GtkGameState->cssProvider), GTK_STYLE_PROVIDER_PRIORITY_USER);
     gtk_window_set_default_size(GTK_WINDOW(Game->GtkGameState->window),WINDOW_WIDTH,WINDOW_HEIGHT);
     gtk_window_set_resizable(GTK_WINDOW(Game->GtkGameState->window),FALSE);
@@ -215,7 +217,7 @@ void InitGtk(){
     g_signal_connect (G_OBJECT (Game->GtkGameState->window), "destroy",G_CALLBACK(CleanUp), NULL);
     gtk_css_provider_load_from_path(Game->GtkGameState->cssProvider,"./Style/gtk.css",NULL);
     gtk_widget_show_all(Game->GtkGameState->window);
-    g_timeout_add(1000,UpdatePower,NULL);
+    g_timeout_add(1000,UpdatePower,NULL); // every second run this function
 }
 
 void Init(){

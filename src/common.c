@@ -62,7 +62,32 @@ void OnKeyPress(GtkWidget *widget, GdkEventKey *event){
     }
 }
 
+void EndGame(){
+    Game->GtkGameState->scoreWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title(GTK_WINDOW(Game->GtkGameState->scoreWindow),"You lost!");
+    gtk_window_set_default_size(GTK_WINDOW(Game->GtkGameState->scoreWindow),150,50);
+    gtk_window_set_resizable(GTK_WINDOW(Game->GtkGameState->scoreWindow),FALSE);
+    GtkWidget*  grid = gtk_grid_new();
+    gtk_container_add(GTK_CONTAINER(Game->GtkGameState->scoreWindow),GTK_WIDGET(grid));
+    char str[15];
+    char scoreNumToString[5];
+    sprintf(scoreNumToString,"%d",Game->Score);
+    strcpy(str,"You scored: ");
+    strcat(str,scoreNumToString);
+    GtkWidget* scoreLabel = gtk_label_new(str);
+    GtkWidget* resetButton = gtk_button_new_with_label("Reset");
+    GtkWidget* quitButton = gtk_button_new_with_label("Exit");
+    g_signal_connect (G_OBJECT (resetButton), "clicked", G_CALLBACK (Reset),NULL);
+    g_signal_connect (G_OBJECT (quitButton), "clicked", G_CALLBACK (CleanUp), NULL);
+    gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(scoreLabel),0,10,200,50);
+    gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(resetButton),0,100,100,50);
+    gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(quitButton),100,100,100,50);
+    gtk_widget_show_all(Game->GtkGameState->scoreWindow);
+}
+
 void Reset(){
+    if(Game->GtkGameState->scoreWindow)
+        gtk_widget_destroy(GTK_WIDGET(Game->GtkGameState->scoreWindow));
     for(int i=0;i<COLS;i++){
         for(int j=0;j<ROWS;j++)
             free(Game->Board[i][j]);
@@ -84,7 +109,6 @@ void Reset(){
         gtk_widget_destroy(child);
     }
     gtk_widget_hide(Game->GtkGameState->window);
-    //gtk_widget_destroy(Game->GtkGameState->window);
     free(Game->GtkGameState);
     free(Game);
     Init();
@@ -96,7 +120,6 @@ void CleanUp(){
             free(Game->Board[i][j]);
         free(Game->Board[i]);
     }
-    //gtk_window_close(GTK_WINDOW(Game->GtkGameState->window));
     free(Game->Board);
     free(Game->GtkGameState->ItemLabels);
     for(int i=0;i<MAP_SIZE_X;i++)

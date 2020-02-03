@@ -1,4 +1,4 @@
-#include "draw.h"
+#include "update.h"
 
 
 void UpdateInventory(int inventoryid,int itemid){
@@ -80,10 +80,10 @@ void UpdateScreen(enum Direction dir){
 int UpdatePower(){
     if(Game->Power>0){
         gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(Game->GtkGameState->powerLeft),Game->Power/100);
-        Game->Power -=0.5;
+        Game->Power -=10;
         return 1;
     }
-    //else CleanUp();
+    else EndGame();
     return 0;
 }
 
@@ -158,6 +158,13 @@ void DropItem(GameObject object){
             break;
         case GOLDOREOBJECT_ID:
             itemid = GOLDITEM_ID;
+            Game->Score+=1;
+            char str[15];
+            char scoreNumToString[5];
+            sprintf(scoreNumToString,"%d",Game->Score);
+            strcpy(str,"Score: ");
+            strcat(str,scoreNumToString);
+            gtk_label_set_text(GTK_LABEL(Game->GtkGameState->scoreLabel),str);
             break;
         case SOILOBJECT_ID:
             itemid = DIRTITEM_ID;
@@ -197,6 +204,7 @@ void Attack(Direction dir){
             break;
     }
     InteractWithObject(pointer);
+    Game->Power-=0.3;
     UpdateBoard();
 }
 
