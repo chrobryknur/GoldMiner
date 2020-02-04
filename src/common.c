@@ -84,10 +84,13 @@ void EndGame(){
     GtkWidget* quitButton = gtk_button_new_with_label("Exit");
     g_signal_connect (G_OBJECT (resetButton), "clicked", G_CALLBACK (Reset),NULL);
     g_signal_connect (G_OBJECT (quitButton), "clicked", G_CALLBACK (CleanUp), NULL);
+    g_signal_connect (G_OBJECT (Game->GtkGameState->scoreWindow), "destroy", G_CALLBACK(CleanUp),NULL);
     gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(scoreLabel),0,10,200,50);
     gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(resetButton),0,100,100,50);
     gtk_grid_attach(GTK_GRID(grid),GTK_WIDGET(quitButton),100,100,100,50);
     gtk_widget_set_name(Game->GtkGameState->scoreWindow, "scoreWindow");
+    gtk_window_set_position(GTK_WINDOW(Game->GtkGameState->scoreWindow),GTK_WIN_POS_CENTER);
+    gtk_widget_hide(Game->GtkGameState->window);
     gtk_widget_show_all(Game->GtkGameState->scoreWindow);
 }
 

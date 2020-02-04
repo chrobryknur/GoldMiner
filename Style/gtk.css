@@ -55,7 +55,12 @@ button label{
 #boardGrid{
     background-color: rgb(0, 51, 4);
 }
-#unactiveLabel{
+
+#activeLabel{
+    color:red;
+}
+
+#inactiveLabel{
     color:rgb(185, 185, 185);
 }
 #greenLabel{

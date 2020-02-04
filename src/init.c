@@ -211,6 +211,7 @@ void InitGtk(){
     gtk_window_set_resizable(GTK_WINDOW(Game->GtkGameState->window),FALSE);
     gtk_window_set_title(GTK_WINDOW(Game->GtkGameState->window),"Game");
     gtk_window_set_icon_from_file(GTK_WINDOW(Game->GtkGameState->window),"./Images/player.png",NULL);
+    g_signal_connect (G_OBJECT (Game->GtkGameState->window), "destroy", G_CALLBACK(CleanUp),NULL);
     InitScreen();
     gtk_container_add(GTK_CONTAINER(Game->GtkGameState->window),GTK_WIDGET(Game->GtkGameState->Grid));
     g_signal_connect (G_OBJECT (Game->GtkGameState->window), "key_press_event", G_CALLBACK (OnKeyPress), NULL);
